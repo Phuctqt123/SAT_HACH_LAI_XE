@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đào Tạo Lái Xe Đoàn Kết - Tư Vấn & Sát Hạch</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #3399ff;
+            --secondary: #ffc107;
+            --text-dark: #1a1a1a;
+            --text-light: #666;
+            --bg-light: #f8f9fa;
+            --white: #ffffff;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--white);
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #2680d0 100%);
+            color: var(--white);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 2px 10px rgba(51, 153, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            animation: slideDown 0.5s ease-out;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo span {
+            color: var(--secondary);
+            font-size: 2rem;
+            font-weight: 800;
+            transition: all 0.3s ease;
+        }
+
+        .logo span:hover {
+            transform: scale(1.1);
+            text-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
+        }
+
+        /* ===== FLOATING CONTACT ICONS ===== */
+        .floating-contact {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 999;
+        }
+
+        .contact-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--secondary);
+            color: var(--primary);
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+            text-decoration: none;
+        }
+
+        .contact-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(255, 193, 7, 0.5);
+        }
+
+        .contact-btn.facebook {
+            background: #1877f2;
+            color: var(--white);
+        }
+        .contact-btn.zalo {
+            background: #0084ff;   /* màu Zalo */
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .floating-contact {
+                right: 1rem;
+                top: auto;
+                bottom: 2rem;
+                flex-direction: row;
+            }
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, #0052a3 50%, var(--secondary) 100%);
+            color: var(--white);
+            padding: 6rem 2rem;
+            text-align: center;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            line-height: 1.2;
+            transition: all 0.3s ease;
+        }
+
+        .hero:hover h1 {
+            transform: scale(1.05);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .hero:hover p {
+            transform: scale(1.03);
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: var(--secondary);
+            color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 193, 7, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--primary);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 4rem 1rem;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .cta-buttons {
+                gap: 1rem;
+            }
+            .btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* ===== SECTIONS ===== */
+        section {
+            padding: 4rem 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+            padding-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .section-title:hover {
+            transform: scale(1.05);
+            color: var(--secondary);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        /* ===== SERVICES SECTION ===== */
+        #services {
+            background: var(--bg-light);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .service-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 102, 204, 0.1);
+            transition: all 0.3s ease;
+            animation: slideUp 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .service-card:nth-child(1) { animation-delay: 0.1s; }
+        .service-card:nth-child(2) { animation-delay: 0.2s; }
+        .service-card:nth-child(3) { animation-delay: 0.3s; }
+        .service-card:nth-child(4) { animation-delay: 0.4s; }
+        .service-card:nth-child(5) { animation-delay: 0.5s; }
+        .service-card:nth-child(6) { animation-delay: 0.6s; }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 102, 204, 0.2);
+            border-top: 4px solid var(--secondary);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .service-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover h3 {
+            transform: scale(1.08);
+            color: var(--secondary);
+        }
+
+        .service-card p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .btn-contact {
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(135deg, var(--primary), #0052a3);
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        .btn-contact:hover {
+            background: linear-gradient(135deg, var(--secondary), #ffb300);
+            color: var(--primary);
+        }
+
+        /* ===== TRAINING LEVELS SECTION ===== */
+        #training {
+            background: var(--white);
+        }
+
+        .levels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .level-badge {
+            background: transparent;
+            color: var(--primary);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            border: 2px solid var(--primary);
+            transition: all 0.3s ease;
+            animation: slideUp 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .level-badge:nth-child(1) { animation-delay: 0.1s; }
+        .level-badge:nth-child(2) { animation-delay: 0.2s; }
+        .level-badge:nth-child(3) { animation-delay: 0.3s; }
+        .level-badge:nth-child(4) { animation-delay: 0.4s; }
+        .level-badge:nth-child(5) { animation-delay: 0.5s; }
+        .level-badge:nth-child(6) { animation-delay: 0.6s; }
+
+        .level-badge:hover {
+            transform: scale(1.1);
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+            box-shadow: 0 6px 20px rgba(51, 153, 255, 0.3);
+        }
+
+        /* ===== SUPPORT SECTION ===== */
+        #support {
+            background: var(--bg-light);
+        }
+
+        .support-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .support-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            border-left: 5px solid var(--secondary);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            animation: slideUp 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .support-card:nth-child(1) { animation-delay: 0.1s; }
+        .support-card:nth-child(2) { animation-delay: 0.2s; }
+        .support-card:nth-child(3) { animation-delay: 0.3s; }
+        .support-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .support-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 8px 25px rgba(0, 102, 204, 0.15);
+        }
+
+        .support-card h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .support-card:hover h3 {
+            transform: scale(1.08);
+            color: var(--secondary);
+        }
+
+        .support-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        /* ===== CONTACT SECTION ===== */
+        #contact {
+            background: linear-gradient(135deg, var(--primary), #0052a3);
+            color: var(--white);
+            text-align: center;
+        }
+
+        .contact-info {
+            margin: 2rem 0;
+        }
+
+        .contact-item {
+            margin-bottom: 2rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .contact-item i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .contact-item p {
+            font-size: 1.1rem;
+        }
+
+        .contact-item a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contact-item a:hover {
+            text-decoration: underline;
+        }
+
+        .contact-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: #2680d0;
+            color: var(--white);
+            text-align: center;
+            padding: 2rem;
+            animation: slideUp 0.6s ease-out;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-icons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        .footer-icons a {
+            color: var(--white);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .footer-icons a:hover {
+            color: var(--secondary);
+            transform: scale(1.2);
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            section {
+                padding: 2rem 1rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .services-grid,
+            .support-grid,
+            .levels-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .contact-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+        .logo {
+            font-size: 22px;       /* size chữ chính */
+            font-weight: 600;
+        }
+
+        .logo .slogan {
+            margin-left: 24px;     /* khoảng cách xa hơn */
+            font-size: 30px;       /* chữ to hơn */
+            font-weight: 700;
+            color: #ffc107;        /* tuỳ chọn: làm nổi bật */
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <div class="logo">
+            Đào Tạo Lái Xe <span class="slogan">Đoàn Kết</span>
+        </div>
+    </div>
+</header>
+
+
+<!-- ===== FLOATING CONTACT ICONS ===== -->
+<div class="floating-contact">
+    <a href="https://zalo.me/0966618797" target="_blank" class="contact-btn zalo" title="Nhắn tin Zalo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" alt="Zalo">
+    </a>
+
+    <a href="https://m.me/100087654321" target="_blank" class="contact-btn facebook" title="Nhắn tin Facebook">
+        <i class="fab fa-facebook-f"></i>
+    </a>
+</div>
+
+<!-- ===== HERO SECTION ===== -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>Tư Vấn Tuyển Sinh & Đào Tạo Lái Xe Ô Tô – Mô Tô</h1>
+        <p>Uy Tín • Nhanh Chóng • Hỗ Trợ Tận Tâm</p>
+        <div class="cta-buttons">
+            <a href="https://zalo.me/0966618797" target="_blank" class="btn btn-primary">
+                <i class="fab fa-square-z"></i> Liên Hệ Zalo
+            </a>
+            <a href="https://m.me/100087654321" target="_blank" class="btn btn-secondary">
+                <i class="fab fa-facebook-f"></i> Liên Hệ Facebook
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ===== SERVICES SECTION ===== -->
+<section id="services">
+    <div class="container">
+        <h2 class="section-title">Dịch Vụ Đào Tạo</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-car"></i></div>
+                <h3>Đào Tạo Ô Tô</h3>
+                <p>Đào tạo & đăng ký sát hạch lái xe các hạng: A1, A, B số sàn, B số tự động, C1</p>
+                <a href="https://zalo.me/0966618797" target="_blank" class="btn-contact">Liên Hệ Ngay</a>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-motorcycle"></i></div>
+                <h3>Đào Tạo Mô Tô</h3>
+                <p>Huấn luyện kỹ năng lái mô tô an toàn với các giáo viên chuyên nghiệp</p>
+                <a href="https://zalo.me/0966618797" target="_blank" class="btn-contact">Liên Hệ Ngay</a>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-certificate"></i></div>
+                <h3>Nâng Hạng Giấy Phép</h3>
+                <p>Nâng hạng từ C → D1 → D2 → D → CE với hướng dẫn chuyên sâu</p>
+                <a href="https://zalo.me/0966618797" target="_blank" class="btn-contact">Tư Vấn Ngay</a>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-wrench"></i></div>
+                <h3>Nhận Bổ Túc Tay Lái</h3>
+                <p>Khóa học bổ túc kỹ năng lái xe số sàn & xe số tự động</p>
+                <a href="https://zalo.me/0966618797" target="_blank" class="btn-contact">Liên Hệ Ngay</a>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-passport"></i></div>
+                <h3>GPLX Quốc Tế</h3>
+                <p>Đổi giấy phép lái xe quốc tế - hỗ trợ online hoặc trực tiếp</p>
+                <a href="https://zalo.me/0966618797" target="_blank" class="btn-contact">Tư Vấn Ngay</a>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-redo"></i></div>
+                <h3>Đổi GPLX Hết Hạn</h3>
+                <p>Hỗ trợ đổi giấy phép lái xe hết hạn và xử lý vi phạm quá hạn</p>
+                <a href="https://zalo.me/0966618797" target="_blank" class="btn-contact">Liên Hệ Ngay</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== TRAINING LEVELS SECTION ===== -->
+<section id="training">
+    <div class="container">
+        <h2 class="section-title">Các Hạng Giấy Phép Đào Tạo</h2>
+        <div class="levels-grid">
+            <div class="level-badge">A1</div>
+            <div class="level-badge">A</div>
+            <div class="level-badge">B Sàn</div>
+            <div class="level-badge">B Tự Động</div>
+            <div class="level-badge">C1</div>
+            <div class="level-badge">C, D, D1, D2</div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== SUPPORT SECTION ===== -->
+<section id="support">
+    <div class="container">
+        <h2 class="section-title">Dịch Vụ Hỗ Trợ Khác</h2>
+        <div class="support-grid">
+            <div class="support-card">
+                <h3><i class="fas fa-check-circle"></i> Bổ Túc Tay Lái</h3>
+                <p>Xe số sàn & xe số tự động - Huấn luyện từ cơ bản đến nâng cao</p>
+                <a href="https://zalo.me/0966618797" target="_blank" class="btn-contact">Liên Hệ</a>
+            </div>
+            <div class="support-card">
+                <h3><i class="fas fa-globe"></i> GPLX Quốc Tế</h3>
+                <p>Đổi giấy phép quốc tế - Hỗ trợ online hoặc trực tiếp tại trung tâm</p>
+                <a href="https://zalo.me/0966618797" target="_blank" class="btn-contact">Liên Hệ</a>
+            </div>
+            <div class="support-card">
+                <h3><i class="fas fa-sync"></i> Đổi GPLX Hết Hạn</h3>
+                <p>Thủ tục đơn giản - Hỗ trợ toàn diện từ A đến Z</p>
+                <a href="https://zalo.me/0966618797" target="_blank" class="btn-contact">Liên Hệ</a>
+            </div>
+            <div class="support-card">
+                <h3><i class="fas fa-alert-circle"></i> Xử Lý Vi Phạm Quá Hạn</h3>
+                <p>Hỗ trợ nộp hồ sơ thi quá hạn cho tất cả các hạng giấy phép</p>
+                <a href="https://zalo.me/0966618797" target="_blank" class="btn-contact">Liên Hệ</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== CONTACT SECTION ===== -->
+<section id="contact">
+    <div class="container">
+        <h2 class="section-title">Thông Tin Liên Hệ</h2>
+        <div class="contact-info">
+            <div class="contact-item">
+                <i class="fas fa-phone"></i>
+                <p><strong>Hotline:</strong> <a href="tel:0966618797">0966 618 797</a></p>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <p><strong>Địa chỉ:</strong> 279 Lê Thị Riêng, P. Thới An, TP. HCM</p>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-clock"></i>
+                <p><strong>Thời gian hoạt động:</strong> 7:00 - 18:00 (Thứ 2 - Chủ Nhật)</p>
+            </div>
+        </div>
+        <div class="contact-buttons">
+            <a href="https://zalo.me/0966618797" target="_blank" class="btn btn-primary">
+                <i class="fab fa-square-z"></i> Nhắn Zalo
+            </a>
+            <a href="https://m.me/100087654321" target="_blank" class="btn btn-primary">
+                <i class="fab fa-facebook-f"></i> Inbox Facebook
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+    <div class="footer-content">
+        <h3>ĐÀO TẠO LÁI XE ĐOÀN KẾT</h3>
+        <p>Uy Tín • Chuyên Nghiệp • Hỗ Trợ Tận Tâm</p>
+        <div class="footer-icons">
+            <a href="https://zalo.me/0966618797" target="_blank" title="Zalo">
+                <i class="fab fa-square-z"></i>
+            </a>
+            <a href="https://m.me/100087654321" target="_blank" title="Facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </div>
+        <p>&copy; 2026 Trung Tâm Đào Tạo Lái Xe Đoàn Kết. Tất Cả Các Quyền Được Bảo Vệ.</p>
+    </div>
+</footer>
+
+<script>
+    // Smooth scroll animations on page load
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.service-card, .level-badge, .support-card').forEach(el => {
+        observer.observe(el);
+    });
+
+    // Add click tracking for analytics if needed
+    document.querySelectorAll('a[href*="zalo.me"], a[href*="m.me"]').forEach(link => {
+        link.addEventListener('click', function() {
+            console.log('Contact link clicked:', this.href);
+        });
+    });
+</script>
+
+</body>
+</html>
