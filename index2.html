@@ -818,6 +818,151 @@
             transform: translateY(-2px);
         }
 
+        /* ===== REVIEW PAGE STYLES ===== */
+        .review-page {
+            display: none;
+            padding: 2rem;
+        }
+
+        .review-page.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .review-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .review-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .review-header h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .review-item {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .review-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--bg-light);
+        }
+
+        .review-question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            flex: 1;
+        }
+
+        .review-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .review-status.correct {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+
+        .review-status.wrong {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .review-status.unanswered {
+            background: rgba(100, 116, 139, 0.2);
+            color: var(--text-light);
+        }
+
+        .review-answers {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .review-answer {
+            padding: 1.2rem;
+            border: 2px solid var(--bg-light);
+            border-radius: 8px;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .review-answer.your-answer {
+            border-color: #fbbf24;
+            background: rgba(251, 191, 36, 0.05);
+        }
+
+        .review-answer.correct-answer {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .review-answer-text {
+            flex: 1;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        .review-answer-label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            min-width: 100px;
+        }
+
+        .review-answer-icon {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
+
+        .review-answer.your-answer .review-answer-icon {
+            background: rgba(251, 191, 36, 0.2);
+            color: #f59e0b;
+        }
+
+        .review-answer.correct-answer .review-answer-icon {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+
+        .review-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+
         @media (max-width: 768px) {
             .header-container {
                 flex-direction: column;
@@ -990,7 +1135,10 @@
                     Bạn đã trả lời đúng 8/10 câu hỏi
                 </div>
                 <div style="margin-top: 2rem;">
-                    <button class="btn btn-primary" onclick="restartQuiz()" style="display: inline-flex; gap: 0.5rem; padding: 1rem 2rem;">
+                    <button class="btn btn-primary" onclick="reviewAnswers()" style="display: inline-flex; gap: 0.5rem; padding: 1rem 2rem;">
+                        <i class="fas fa-eye"></i> Xem lại đáp án
+                    </button>
+                    <button class="btn btn-primary" onclick="restartQuiz()" style="display: inline-flex; gap: 0.5rem; padding: 1rem 2rem; margin-left: 1rem;">
                         <i class="fas fa-redo"></i> Làm lại
                     </button>
                     <button class="btn btn-secondary" onclick="backToHomeFromQuiz()" style="display: inline-flex; gap: 0.5rem; padding: 1rem 2rem; margin-left: 1rem;">
@@ -1086,6 +1234,27 @@
                 <button class="btn-back" onclick="backToHome()">
                     <i class="fas fa-home"></i> Quay lại trang chủ
                 </button>
+            </div>
+        </div>
+
+        <!-- REVIEW PAGE -->
+        <div id="reviewPage" class="review-page">
+            <div class="review-container">
+                <div class="review-header">
+                    <h2>📋 Xem Lại Đáp Án</h2>
+                    <p id="reviewSummary">Chúc mừng! Bạn đã trả lời đúng 8/10 câu hỏi - 80%</p>
+                </div>
+                <div id="reviewItemsContainer">
+                    <!-- Items sẽ được tạo động -->
+                </div>
+                <div class="review-buttons">
+                    <button class="btn btn-primary" onclick="restartQuizFromReview()" style="display: inline-flex; gap: 0.5rem; padding: 1rem 2rem;">
+                        <i class="fas fa-redo"></i> Làm lại
+                    </button>
+                    <button class="btn btn-secondary" onclick="backToHomeFromReview()" style="display: inline-flex; gap: 0.5rem; padding: 1rem 2rem;">
+                        <i class="fas fa-home"></i> Trang chủ
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -1247,6 +1416,121 @@
         } else {
             resultMessage.style.color = '#ef4444';
         }
+    }
+
+    function reviewAnswers() {
+        const questions = quizData[currentQuizType];
+        const correctCount = calculateScore();
+        const percentage = Math.round((correctCount / questions.length) * 100);
+
+        // Cập nhật tóm tắt kết quả
+        document.getElementById('reviewSummary').textContent = 
+            `Bạn đã trả lời đúng ${correctCount}/${questions.length} câu hỏi - ${percentage}%`;
+
+        // Tạo danh sách các câu hỏi cần xem lại
+        const reviewContainer = document.getElementById('reviewItemsContainer');
+        reviewContainer.innerHTML = '';
+
+        questions.forEach((question, index) => {
+            const userAnswer = userAnswers[index];
+            const correctAnswer = question.correct;
+            const isCorrect = userAnswer === correctAnswer;
+            const isAnswered = userAnswer !== -1;
+
+            const div = document.createElement('div');
+            div.className = 'review-item';
+
+            // Header của câu hỏi
+            const header = document.createElement('div');
+            header.className = 'review-item-header';
+
+            const questionText = document.createElement('div');
+            questionText.className = 'review-question-text';
+            questionText.textContent = `Câu ${index + 1}: ${question.question}`;
+
+            const status = document.createElement('div');
+            status.className = `review-status ${isAnswered ? (isCorrect ? 'correct' : 'wrong') : 'unanswered'}`;
+            
+            if (isAnswered) {
+                status.innerHTML = isCorrect 
+                    ? '<i class="fas fa-check-circle"></i> Đúng' 
+                    : '<i class="fas fa-times-circle"></i> Sai';
+            } else {
+                status.innerHTML = '<i class="fas fa-question-circle"></i> Chưa trả lời';
+            }
+
+            header.appendChild(questionText);
+            header.appendChild(status);
+            div.appendChild(header);
+
+            // Phần đáp án
+            const answersSection = document.createElement('div');
+            answersSection.className = 'review-answers';
+
+            // Hiển thị đáp án người dùng chọn
+            if (isAnswered && !isCorrect) {
+                const userAnswerDiv = document.createElement('div');
+                userAnswerDiv.className = 'review-answer your-answer';
+                userAnswerDiv.innerHTML = `
+                    <div class="review-answer-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <div class="review-answer-label">👤 Đáp án của bạn (Sai)</div>
+                        <div class="review-answer-text">${question.answers[userAnswer]}</div>
+                    </div>
+                `;
+                answersSection.appendChild(userAnswerDiv);
+            }
+
+            // Hiển thị đáp án đúng
+            const correctAnswerDiv = document.createElement('div');
+            correctAnswerDiv.className = 'review-answer correct-answer';
+            correctAnswerDiv.innerHTML = `
+                <div class="review-answer-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+                <div>
+                    <div class="review-answer-label">✓ Đáp án đúng</div>
+                    <div class="review-answer-text">${question.answers[correctAnswer]}</div>
+                </div>
+            `;
+            answersSection.appendChild(correctAnswerDiv);
+
+            div.appendChild(answersSection);
+            reviewContainer.appendChild(div);
+        });
+
+        // Ẩn modal quiz và hiển thị trang review
+        document.getElementById('quizModal').classList.remove('active');
+        document.getElementById('reviewPage').classList.add('active');
+    }
+
+    function restartQuizFromReview() {
+        document.getElementById('reviewPage').classList.remove('active');
+        
+        // Reset quiz
+        currentQuestionIndex = 0;
+        userAnswers = new Array(quizData[currentQuizType].length).fill(-1);
+        score = 0;
+
+        // Ẩn result view và hiển thị câu hỏi
+        document.getElementById('quizResultView').style.display = 'none';
+        document.getElementById('questionContainer').style.display = 'flex';
+
+        // Mở lại modal và hiển thị câu hỏi đầu tiên
+        document.getElementById('quizModal').classList.add('active');
+        displayQuestion();
+    }
+
+    function backToHomeFromReview() {
+        document.getElementById('reviewPage').classList.remove('active');
+        document.getElementById('heroPage').classList.add('active');
+        
+        // Reset quiz
+        currentQuestionIndex = 0;
+        userAnswers = [];
+        score = 0;
     }
 
     function backToHome() {
