@@ -13,11 +13,14 @@
         }
 
         :root {
-            --primary: #3399ff;
-            --secondary: #ffc107;
-            --text-dark: #1a1a1a;
-            --text-light: #666;
-            --bg-light: #f8f9fa;
+            --primary: #0f172a;
+            --primary-light: #1e293b;
+            --accent: #06b6d4;
+            --accent-dark: #0891b2;
+            --success: #10b981;
+            --text-dark: #0f172a;
+            --text-light: #64748b;
+            --bg-light: #f8fafc;
             --white: #ffffff;
         }
 
@@ -26,7 +29,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
             line-height: 1.6;
             color: var(--text-dark);
             background: var(--white);
@@ -34,16 +37,14 @@
 
         /* ===== HEADER ===== */
         header {
-            background: linear-gradient(135deg, var(--primary) 0%, #2680d0 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: var(--white);
             padding: 1.5rem 2rem;
-            box-shadow: 0 2px 10px rgba(51, 153, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.15);
             position: sticky;
             top: 0;
             z-index: 100;
             animation: slideDown 0.5s ease-out;
-            border-bottom-left-radius: 15px;
-            border-bottom-right-radius: 15px;
         }
 
         @keyframes slideDown {
@@ -63,30 +64,41 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 2rem;
         }
 
         .logo {
-            font-size: 10rem;
-            font-weight: 1000;
+            font-size: 1.4rem;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: all 0.4s ease;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
         }
 
         .logo:hover {
-            transform: scale(1.05);
+            color: var(--accent);
         }
 
         .logo span {
-            color: var(--secondary);
-            font-size: 2rem;
+            color: var(--accent);
             font-weight: 800;
             transition: all 0.3s ease;
+            margin-left: 0.5rem;
         }
 
         .logo span:hover {
-            transform: scale(1.1);
-            text-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
+            text-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
+        }
+
+        marquee {
+            flex: 1;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--primary);
+            background: linear-gradient(135deg, #cffafe 0%, #e0f2fe 100%);
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
         }
 
         /* ===== FLOATING CONTACT ICONS ===== */
@@ -104,9 +116,9 @@
         .contact-btn {
             width: 60px;
             height: 60px;
-            border-radius: 50%;
-            background: var(--secondary);
-            color: var(--primary);
+            border-radius: 12px;
+            background: var(--accent);
+            color: var(--white);
             border: none;
             font-size: 1.5rem;
             cursor: pointer;
@@ -114,22 +126,30 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+            box-shadow: 0 8px 24px rgba(6, 182, 212, 0.3);
             text-decoration: none;
         }
 
         .contact-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 25px rgba(255, 193, 7, 0.5);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 32px rgba(6, 182, 212, 0.4);
+            background: var(--accent-dark);
         }
 
         .contact-btn.facebook {
             background: #1877f2;
-            color: var(--white);
         }
+
+        .contact-btn.facebook:hover {
+            background: #1567d4;
+        }
+
         .contact-btn.zalo {
-            background: #0084ff;   /* màu Zalo */
-            color: #fff;
+            background: #0084ff;
+        }
+
+        .contact-btn.zalo:hover {
+            background: #0070d4;
         }
 
         @media (max-width: 768px) {
@@ -143,10 +163,45 @@
 
         /* ===== HERO SECTION ===== */
         .hero {
-            background: linear-gradient(135deg, var(--primary) 0%, #0052a3 50%, var(--secondary) 100%);
-            color: var(--white);
-            padding: 6rem 2rem;
+            position: relative;
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+        }
+
+        .hero video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.55);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
+            color: var(--white);
+            padding: 0 20px;
+            max-width: 900px;
             animation: fadeIn 0.8s ease-out;
         }
 
@@ -161,21 +216,12 @@
             }
         }
 
-        .hero-content {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
         .hero h1 {
             font-size: 3rem;
             margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
             line-height: 1.2;
-            transition: all 0.3s ease;
-        }
-
-        .hero:hover h1 {
-            transform: scale(1.05);
+            font-weight: 800;
         }
 
         .hero p {
@@ -183,11 +229,6 @@
             margin-bottom: 2rem;
             opacity: 0.95;
             font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .hero:hover p {
-            transform: scale(1.03);
         }
 
         .cta-buttons {
@@ -198,9 +239,9 @@
         }
 
         .btn {
-            padding: 1rem 2rem;
+            padding: 1rem 2.5rem;
             border: none;
-            border-radius: 50px;
+            border-radius: 8px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
@@ -211,16 +252,18 @@
             gap: 0.5rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .btn-primary {
-            background: var(--secondary);
-            color: var(--primary);
+            background: var(--accent);
+            color: var(--white);
         }
 
         .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 193, 7, 0.4);
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(6, 182, 212, 0.4);
         }
 
         .btn-secondary {
@@ -229,16 +272,17 @@
         }
 
         .btn-secondary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.4);
+            background: var(--bg-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.4);
         }
 
         @media (max-width: 768px) {
             .hero {
-                padding: 4rem 1rem;
+                height: 350px;
             }
             .hero h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
             .hero p {
                 font-size: 1rem;
@@ -250,11 +294,19 @@
                 padding: 0.8rem 1.5rem;
                 font-size: 0.9rem;
             }
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            marquee {
+                width: 100%;
+                font-size: 0.85rem;
+            }
         }
 
         /* ===== SECTIONS ===== */
         section {
-            padding: 4rem 2rem;
+            padding: 5rem 2rem;
         }
 
         .container {
@@ -263,18 +315,13 @@
         }
 
         .section-title {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             color: var(--primary);
             margin-bottom: 3rem;
             text-align: center;
             position: relative;
-            padding-bottom: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .section-title:hover {
-            transform: scale(1.05);
-            color: var(--secondary);
+            padding-bottom: 1.5rem;
+            font-weight: 800;
         }
 
         .section-title::after {
@@ -283,9 +330,9 @@
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 100px;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 120px;
+            height: 3px;
+            background: var(--accent);
             border-radius: 2px;
         }
 
@@ -303,12 +350,13 @@
 
         .service-card {
             background: var(--white);
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 102, 204, 0.1);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
             transition: all 0.3s ease;
             animation: slideUp 0.6s ease-out forwards;
             opacity: 0;
+            border-top: 4px solid transparent;
         }
 
         @keyframes slideUp {
@@ -330,42 +378,43 @@
         .service-card:nth-child(6) { animation-delay: 0.6s; }
 
         .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 30px rgba(0, 102, 204, 0.2);
-            border-top: 4px solid var(--secondary);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(6, 182, 212, 0.15);
+            border-top-color: var(--accent);
         }
 
         .service-icon {
-            font-size: 3rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
+            font-size: 2.8rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
         }
 
         .service-card h3 {
             color: var(--primary);
             margin-bottom: 1rem;
             font-size: 1.3rem;
+            font-weight: 700;
             transition: all 0.3s ease;
         }
 
         .service-card:hover h3 {
-            transform: scale(1.08);
-            color: var(--secondary);
+            color: var(--accent);
         }
 
         .service-card p {
             color: var(--text-light);
             margin-bottom: 1.5rem;
             font-size: 0.95rem;
+            line-height: 1.6;
         }
 
         .btn-contact {
             width: 100%;
-            padding: 0.8rem;
-            background: linear-gradient(135deg, var(--primary), #0052a3);
+            padding: 0.9rem;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
             color: var(--white);
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -373,11 +422,12 @@
             display: block;
             text-align: center;
             font-size: 0.95rem;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.2);
         }
 
         .btn-contact:hover {
-            background: linear-gradient(135deg, var(--secondary), #ffb300);
-            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.3);
         }
 
         /* ===== TRAINING LEVELS SECTION ===== */
@@ -393,17 +443,18 @@
         }
 
         .level-badge {
-            background: transparent;
+            background: var(--white);
             color: var(--primary);
-            padding: 1.5rem;
-            border-radius: 10px;
+            padding: 2rem 1.5rem;
+            border-radius: 12px;
             text-align: center;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 700;
-            border: 2px solid var(--primary);
+            border: 2px solid var(--accent);
             transition: all 0.3s ease;
             animation: slideUp 0.6s ease-out forwards;
             opacity: 0;
+            box-shadow: 0 2px 8px rgba(6, 182, 212, 0.08);
         }
 
         .level-badge:nth-child(1) { animation-delay: 0.1s; }
@@ -414,11 +465,10 @@
         .level-badge:nth-child(6) { animation-delay: 0.6s; }
 
         .level-badge:hover {
-            transform: scale(1.1);
-            background: var(--primary);
+            transform: scale(1.08) translateY(-3px);
+            background: var(--accent);
             color: var(--white);
-            border-color: var(--primary);
-            box-shadow: 0 6px 20px rgba(51, 153, 255, 0.3);
+            box-shadow: 0 8px 24px rgba(6, 182, 212, 0.3);
         }
 
         /* ===== SUPPORT SECTION ===== */
@@ -435,10 +485,10 @@
 
         .support-card {
             background: var(--white);
-            padding: 2rem;
-            border-radius: 10px;
-            border-left: 5px solid var(--secondary);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 2.5rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent);
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
             transition: all 0.3s ease;
             animation: slideUp 0.6s ease-out forwards;
             opacity: 0;
@@ -450,30 +500,31 @@
         .support-card:nth-child(4) { animation-delay: 0.4s; }
 
         .support-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 8px 25px rgba(0, 102, 204, 0.15);
+            transform: translateX(5px) translateY(-3px);
+            box-shadow: 0 8px 24px rgba(6, 182, 212, 0.15);
         }
 
         .support-card h3 {
             color: var(--primary);
-            margin-bottom: 0.5rem;
-            transition: all 0.3s ease;
+            margin-bottom: 0.8rem;
+            font-weight: 700;
+            font-size: 1.1rem;
         }
 
         .support-card:hover h3 {
-            transform: scale(1.08);
-            color: var(--secondary);
+            color: var(--accent);
         }
 
         .support-card p {
             color: var(--text-light);
             font-size: 0.95rem;
             margin-bottom: 1rem;
+            line-height: 1.6;
         }
 
         /* ===== CONTACT SECTION ===== */
         #contact {
-            background: linear-gradient(135deg, var(--primary), #0052a3);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: var(--white);
             text-align: center;
         }
@@ -488,9 +539,9 @@
         }
 
         .contact-item i {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            color: var(--secondary);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
         }
 
         .contact-item p {
@@ -498,12 +549,14 @@
         }
 
         .contact-item a {
-            color: var(--secondary);
+            color: var(--accent);
             text-decoration: none;
             font-weight: 600;
+            transition: all 0.3s ease;
         }
 
         .contact-item a:hover {
+            color: var(--white);
             text-decoration: underline;
         }
 
@@ -517,13 +570,11 @@
 
         /* ===== FOOTER ===== */
         footer {
-            background: #2680d0;
+            background: linear-gradient(135deg, #0a0f1b 0%, var(--primary) 100%);
             color: var(--white);
             text-align: center;
-            padding: 2rem;
+            padding: 3rem 2rem;
             animation: slideUp 0.6s ease-out;
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
         }
 
         .footer-content {
@@ -533,9 +584,9 @@
 
         .footer-icons {
             display: flex;
-            gap: 1rem;
+            gap: 1.5rem;
             justify-content: center;
-            margin: 1rem 0;
+            margin: 1.5rem 0;
         }
 
         .footer-icons a {
@@ -543,35 +594,41 @@
             font-size: 1.5rem;
             transition: all 0.3s ease;
             text-decoration: none;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: rgba(6, 182, 212, 0.1);
         }
 
         .footer-icons a:hover {
-            color: var(--secondary);
-            transform: scale(1.2);
+            color: var(--accent);
+            background: rgba(6, 182, 212, 0.2);
+            transform: translateY(-3px);
         }
 
         footer p {
             margin: 0.5rem 0;
             opacity: 0.9;
+            line-height: 1.6;
         }
 
         @media (max-width: 768px) {
             section {
-                padding: 2rem 1rem;
+                padding: 3rem 1rem;
             }
 
             .section-title {
-                font-size: 1.8rem;
+                font-size: 2rem;
+                margin-bottom: 2rem;
             }
 
             .services-grid,
             .support-grid,
             .levels-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .hero h1 {
-                font-size: 1.8rem;
             }
 
             .contact-buttons {
@@ -582,17 +639,7 @@
                 width: 100%;
             }
         }
-        .logo {
-            font-size: 22px;       /* size chữ chính */
-            font-weight: 600;
-        }
 
-        .logo .slogan {
-            margin-left: -10px;     /* khoảng cách xa hơn */
-            font-size: 40px;       /* chữ to hơn */
-            font-weight: 800;
-            color: #ffc107;        /* tuỳ chọn: làm nổi bật */
-        }
         .map-container {
             margin-top: 2rem;
             background: transparent;
@@ -615,7 +662,7 @@
         }
 
         .map-btn-primary {
-            background: linear-gradient(135deg, #3399ff, #0052a3);
+            background: linear-gradient(135deg, #06b6d4, #06b6d4);
             color: #fff;
         }
 
@@ -629,60 +676,6 @@
             font-weight: 800;
         }
 
-        .hero {
-            position: relative;
-            width: 100%;
-            height: 500px;
-            overflow: hidden;
-            border-radius: 20px;
-        }
-
-        /* Video nền */
-        .hero video {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        /* Lớp phủ tối */
-        .hero-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0,0,0,0.45);
-            z-index: 1;
-        }
-
-        /* Nội dung nổi */
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: #fff;
-            padding: 0 20px;
-        }
-        @media (max-width: 768px) {
-            .hero {
-                height: 350px;
-            }
-
-            .main-title {
-                font-size: 1.8rem;
-            }
-        }
-
-
-
-
-
     </style>
 </head>
 <body>
@@ -690,33 +683,19 @@
 <header>
     <div class="header-container">
         <div class="logo">
-            Đào Tạo Lái Xe <span class="slogan">Đoàn Kết</span>
+            Đào Tạo Lái Xe <span>Đoàn Kết</span>
         </div>
 
-        <marquee
-            behavior="scroll"
-            direction="left"
-            style="
-                font-size: 18px;
-                font-weight: 600;
-                color: #d35400;
-                background: #fff3e0;
-                padding: 10px 10px;
-                border-radius: 8px;
-            "
-        >
+        <marquee behavior="scroll" direction="left">
             🚗 Xin cảm ơn bạn đã ghé qua trang Web này, chúc bạn một ngày tốt lành! ✨
         </marquee>
-
     </div>
 </header>
-
-
 
 <!-- ===== FLOATING CONTACT ICONS ===== -->
 <div class="floating-contact">
     <a href="https://zalo.me/0966618797" target="_blank" class="contact-btn zalo" title="Nhắn tin Zalo">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" alt="Zalo">
+        <i class="fab fa-z"></i>
     </a>
 
     <a href="https://m.me/100087654321" target="_blank" class="contact-btn facebook" title="Nhắn tin Facebook">
@@ -726,91 +705,70 @@
 
 <!-- ===== HERO SECTION ===== -->
 <section class="hero">
-
-    <!-- Video nền -->
     <video id="heroVideo" autoplay muted loop playsinline></video>
-
-    <!-- Lớp phủ tối -->
     <div class="hero-overlay"></div>
 
-    <!-- Nội dung -->
     <div class="hero-content">
-        <h1 class="main-title">
-            Tư Vấn Tuyển Sinh & Đào Tạo Lái Xe Ô Tô – Mô Tô
-        </h1>
+        <h1>Tư Vấn Tuyển Sinh & Đào Tạo Lái Xe Ô Tô – Mô Tô</h1>
         <p>Uy Tín • Nhanh Chóng • Hỗ Trợ Tận Tâm</p>
         <div class="cta-buttons">
             <a href="https://zalo.me/0966618797" target="_blank" class="btn btn-primary">
-                <i class="fab fa-square-z"></i> Liên Hệ Zalo
+                <i class="fab fa-z"></i> Liên Hệ Zalo
             </a>
             <a href="https://m.me/100087654321" target="_blank" class="btn btn-secondary">
                 <i class="fab fa-facebook-f"></i> Liên Hệ Facebook
             </a>
         </div>
     </div>
-
 </section>
-
-<!-- HLS -->
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-<script>
-    const video = document.getElementById('heroVideo');
-    const src = "Video_m3u8/bed02ad7228d.m3u8";
-
-    if (Hls.isSupported()) {
-        const hls = new Hls({
-            autoStartLoad: true,
-            capLevelToPlayerSize: true
-        });
-        hls.loadSource(src);
-        hls.attachMedia(video);
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = src;
-    }
-</script>
-
 
 
 <!-- ===== SERVICES SECTION ===== -->
 <section id="services">
     <div class="container">
-        <h2 class="section-title">Dịch Vụ Đào Tạo</h2>
+        <h2 class="section-title">Dịch Vụ Của Chúng Tôi</h2>
+        
         <div class="services-grid">
             <div class="service-card">
-                <div class="service-icon"><i class="fas fa-car"></i></div>
-                <h3>Đào Tạo Ô Tô</h3>
-                <p>Đào tạo & đăng ký sát hạch lái xe các hạng: A1, A, B số sàn, B số tự động, C1</p>
-                <a href="https://zalo.me/0966618797" target="_blank" class="btn-contact">Liên Hệ Ngay</a>
+                <div class="service-icon"><i class="fas fa-graduation-cap"></i></div>
+                <h3>Đào Tạo Lái Xe B1</h3>
+                <p>Khóa đào tạo cấp bằng B1 với giáo viên dạy lái xe tân tiến, đạt chuẩn kỹ năng lái xe an toàn.</p>
+                <a href="https://zalo.me/0966618797" class="btn-contact">Liên Hệ Ngay</a>
             </div>
+
             <div class="service-card">
                 <div class="service-icon"><i class="fas fa-motorcycle"></i></div>
-                <h3>Đào Tạo Mô Tô</h3>
-                <p>Huấn luyện kỹ năng lái mô tô an toàn với các giáo viên chuyên nghiệp</p>
-                <a href="https://zalo.me/0966618797" target="_blank" class="btn-contact">Liên Hệ Ngay</a>
+                <h3>Đào Tạo Lái Xe Mô Tô</h3>
+                <p>Khóa đào tạo cấp bằng mô tô chuyên nghiệp, hướng dẫn kỹ năng lái xe an toàn, hiệu quả.</p>
+                <a href="https://zalo.me/0966618797" class="btn-contact">Liên Hệ Ngay</a>
             </div>
+
             <div class="service-card">
-                <div class="service-icon"><i class="fas fa-certificate"></i></div>
-                <h3>Nâng Hạng Giấy Phép</h3>
-                <p>Nâng hạng từ C → D1 → D2 → D → CE với hướng dẫn chuyên sâu</p>
-                <a href="https://zalo.me/0966618797" target="_blank" class="btn-contact">Tư Vấn Ngay</a>
+                <div class="service-icon"><i class="fas fa-user-tie"></i></div>
+                <h3>Tư Vấn Tuyển Sinh</h3>
+                <p>Tư vấn chi tiết về các lớp học, lịch trình, chi phí và quá trình cấp bằng lái xe.</p>
+                <a href="https://zalo.me/0966618797" class="btn-contact">Liên Hệ Ngay</a>
             </div>
+
             <div class="service-card">
-                <div class="service-icon"><i class="fas fa-wrench"></i></div>
-                <h3>Nhận Bổ Túc Tay Lái</h3>
-                <p>Khóa học bổ túc kỹ năng lái xe số sàn & xe số tự động</p>
-                <a href="https://zalo.me/0966618797" target="_blank" class="btn-contact">Liên Hệ Ngay</a>
+                <div class="service-icon"><i class="fas fa-check-circle"></i></div>
+                <h3>Sát Hạch Bằng Lái Xe</h3>
+                <p>Hỗ trợ sát hạch bằng lái xe với đội hình giáo viên kinh nghiệm, tỷ lệ đạt cao.</p>
+                <a href="https://zalo.me/0966618797" class="btn-contact">Liên Hệ Ngay</a>
             </div>
+
             <div class="service-card">
-                <div class="service-icon"><i class="fas fa-passport"></i></div>
-                <h3>GPLX Quốc Tế</h3>
-                <p>Đổi giấy phép lái xe quốc tế - hỗ trợ online hoặc trực tiếp</p>
-                <a href="https://zalo.me/0966618797" target="_blank" class="btn-contact">Tư Vấn Ngay</a>
+                <div class="service-icon"><i class="fas fa-headset"></i></div>
+                <h3>Hỗ Trợ 24/7</h3>
+                <p>Đội ngũ hỗ trợ khách hàng luôn sẵn sàng giải đáp thắc mắc mọi lúc, mọi nơi.</p>
+                <a href="https://zalo.me/0966618797" class="btn-contact">Liên Hệ Ngay</a>
             </div>
+
             <div class="service-card">
-                <div class="service-icon"><i class="fas fa-redo"></i></div>
-                <h3>Đổi GPLX Hết Hạn</h3>
-                <p>Hỗ trợ đổi giấy phép lái xe hết hạn và xử lý vi phạm quá hạn</p>
-                <a href="https://zalo.me/0966618797" target="_blank" class="btn-contact">Liên Hệ Ngay</a>
+                <div class="service-icon"><i class="fas fa-car"></i></div>
+                <h3>Hỗ Trợ Thủ Tục</h3>
+                <p>Hỗ trợ đầy đủ các thủ tục hành chính liên quan đến cấp bằng lái xe.</p>
+                <a href="https://zalo.me/0966618797" class="btn-contact">Liên Hệ Ngay</a>
             </div>
         </div>
     </div>
@@ -846,20 +804,18 @@
         <span>Chỉ đường trên Google Maps</span>
     </a>
 </div>
-
-
-
 <!-- ===== TRAINING LEVELS SECTION ===== -->
 <section id="training">
     <div class="container">
-        <h2 class="section-title">Các Hạng Giấy Phép Đào Tạo</h2>
+        <h2 class="section-title">Các Loại Bằng Lái Xe</h2>
+        
         <div class="levels-grid">
-            <div class="level-badge">A1</div>
-            <div class="level-badge">A</div>
-            <div class="level-badge">B Sàn</div>
-            <div class="level-badge">B Tự Động</div>
-            <div class="level-badge">C1</div>
-            <div class="level-badge">C, D, D1, D2</div>
+            <div class="level-badge">🅰️ Bằng A1</div>
+            <div class="level-badge">🅰️ Bằng A2</div>
+            <div class="level-badge">🅰️ Bằng A (Full)</div>
+            <div class="level-badge">🅱️ Bằng B1</div>
+            <div class="level-badge">🅱️ Bằng B2</div>
+            <div class="level-badge">🅲️ Bằng C</div>
         </div>
     </div>
 </section>
@@ -867,27 +823,27 @@
 <!-- ===== SUPPORT SECTION ===== -->
 <section id="support">
     <div class="container">
-        <h2 class="section-title">Dịch Vụ Hỗ Trợ Khác</h2>
+        <h2 class="section-title">Hỗ Trợ Của Chúng Tôi</h2>
+        
         <div class="support-grid">
             <div class="support-card">
-                <h3><i class="fas fa-check-circle"></i> Bổ Túc Tay Lái</h3>
-                <p>Xe số sàn & xe số tự động - Huấn luyện từ cơ bản đến nâng cao</p>
-                <a href="https://zalo.me/0966618797" target="_blank" class="btn-contact">Liên Hệ</a>
+                <h3><i class="fas fa-map-marker-alt"></i> Địa Điểm Đào Tạo</h3>
+                <p>Trung tâm đào tạo lái xe nằm ở vị trí thuận tiện, gần trung tâm thành phố, dễ dàng đi lại.</p>
             </div>
+
             <div class="support-card">
-                <h3><i class="fas fa-globe"></i> GPLX Quốc Tế</h3>
-                <p>Đổi giấy phép quốc tế - Hỗ trợ online hoặc trực tiếp tại trung tâm</p>
-                <a href="https://zalo.me/0966618797" target="_blank" class="btn-contact">Liên Hệ</a>
+                <h3><i class="fas fa-calendar-alt"></i> Lịch Học Linh Động</h3>
+                <p>Các lớp học được sắp xếp linh động, phù hợp với thời gian của từng học viên.</p>
             </div>
+
             <div class="support-card">
-                <h3><i class="fas fa-sync"></i> Đổi GPLX Hết Hạn</h3>
-                <p>Thủ tục đơn giản - Hỗ trợ toàn diện từ A đến Z</p>
-                <a href="https://zalo.me/0966618797" target="_blank" class="btn-contact">Liên Hệ</a>
+                <h3><i class="fas fa-medal"></i> Giáo Viên Chuyên Nghiệp</h3>
+                <p>Đội ngũ giáo viên dạy lái xe có chứng chỉ, kinh nghiệm nhiều năm trong lĩnh vực.</p>
             </div>
+
             <div class="support-card">
-                <h3><i class="fas fa-alert-circle"></i> Xử Lý Vi Phạm Quá Hạn</h3>
-                <p>Hỗ trợ nộp hồ sơ thi quá hạn cho tất cả các hạng giấy phép</p>
-                <a href="https://zalo.me/0966618797" target="_blank" class="btn-contact">Liên Hệ</a>
+                <h3><i class="fas fa-star"></i> Tỷ Lệ Đạt Cao</h3>
+                <p>Tỷ lệ đạt kỳ sát hạch lái xe của học viên của chúng tôi luôn ở mức cao nhất.</p>
             </div>
         </div>
     </div>
@@ -896,27 +852,36 @@
 <!-- ===== CONTACT SECTION ===== -->
 <section id="contact">
     <div class="container">
-        <h2 class="section-title">Thông Tin Liên Hệ</h2>
+        <h2 class="section-title" style="color: var(--white);">Liên Hệ Với Chúng Tôi</h2>
+        
         <div class="contact-info">
             <div class="contact-item">
                 <i class="fas fa-phone"></i>
-                <p><strong>Hotline:</strong> <a href="tel:0966618797">0966 618 797</a></p>
+                <p>Số Điện Thoại: <a href="tel:0966618797">0966 618 797</a></p>
             </div>
+
+            <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <p>Email: <a href="mailto:info@doantapluaithiet.com">info@doantaplaithiet.com</a></p>
+            </div>
+
             <div class="contact-item">
                 <i class="fas fa-map-marker-alt"></i>
-                <p><strong>Địa chỉ:</strong> 279 Lê Thị Riêng, P. Thới An, TP. HCM</p>
+                <p>Địa Chỉ: 123 Đường Lê Văn Sỹ, Quận 3, TP.HCM</p>
             </div>
+
             <div class="contact-item">
                 <i class="fas fa-clock"></i>
-                <p><strong>Thời gian hoạt động:</strong> 7:00 - 18:00 (Thứ 2 - Chủ Nhật)</p>
+                <p>Giờ Hoạt Động: Thứ 2 - Chủ Nhật: 7:00 AM - 9:00 PM</p>
             </div>
         </div>
+
         <div class="contact-buttons">
             <a href="https://zalo.me/0966618797" target="_blank" class="btn btn-primary">
-                <i class="fab fa-square-z"></i> Nhắn Zalo
+                <i class="fab fa-z"></i> Nhắn Tin Zalo
             </a>
             <a href="https://m.me/100087654321" target="_blank" class="btn btn-primary">
-                <i class="fab fa-facebook-f"></i> Inbox Facebook
+                <i class="fab fa-facebook-f"></i> Nhắn Tin Facebook
             </a>
         </div>
     </div>
@@ -925,46 +890,41 @@
 <!-- ===== FOOTER ===== -->
 <footer>
     <div class="footer-content">
-        <h3>ĐÀO TẠO LÁI XE ĐOÀN KẾT</h3>
-        <p>Uy Tín • Chuyên Nghiệp • Hỗ Trợ Tận Tâm</p>
+        <h3>Đào Tạo Lái Xe Đoàn Kết</h3>
+        <p>Tư Vấn Tuyển Sinh & Đào Tạo Lái Xe Ô Tô – Mô Tô</p>
+        
         <div class="footer-icons">
             <a href="https://zalo.me/0966618797" target="_blank" title="Zalo">
-                <i class="fab fa-square-z"></i>
+                <i class="fab fa-z"></i>
             </a>
             <a href="https://m.me/100087654321" target="_blank" title="Facebook">
                 <i class="fab fa-facebook-f"></i>
             </a>
         </div>
-        <p>&copy; 2026 Trung Tâm Đào Tạo Lái Xe Đoàn Kết. Tất Cả Các Quyền Được Bảo Vệ.</p>
+
+        <p>&copy; 2024 Đào Tạo Lái Xe Đoàn Kết. All Rights Reserved.</p>
+        <p>Uy Tín • Nhanh Chóng • Hỗ Trợ Tận Tâm</p>
     </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script>
-    // Smooth scroll animations on page load
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
+    const video = document.getElementById('heroVideo');
+    const src = "Video_m3u8/bed02ad7228d.m3u8";
 
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
+    if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(src);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, function () {
+            video.play();
         });
-    }, observerOptions);
-
-    document.querySelectorAll('.service-card, .level-badge, .support-card').forEach(el => {
-        observer.observe(el);
-    });
-
-    // Add click tracking for analytics if needed
-    document.querySelectorAll('a[href*="zalo.me"], a[href*="m.me"]').forEach(link => {
-        link.addEventListener('click', function() {
-            console.log('Contact link clicked:', this.href);
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = src;
+        video.addEventListener('loadedmetadata', function () {
+            video.play();
         });
-    });
+    }
 </script>
 
 </body>
