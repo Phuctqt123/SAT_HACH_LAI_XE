@@ -593,6 +593,38 @@
             font-weight: 700;
             color: #ffc107;        /* tuỳ chọn: làm nổi bật */
         }
+        .map-container {
+            margin-top: 2rem;
+            background: transparent;
+            box-shadow: none;
+            border-radius: 0;
+            overflow: visible;
+        }
+
+        .map-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .map-btn-primary {
+            background: linear-gradient(135deg, #3399ff, #0052a3);
+            color: #fff;
+        }
+
+        .map-btn-primary:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 12px 35px rgba(51,153,255,0.4);
+        }
+
+
 
     </style>
 </head>
@@ -678,6 +710,39 @@
         </div>
     </div>
 </section>
+
+
+<div class="map-container">
+    <a
+        href="https://www.google.com/maps?q=10.873585933134146,106.65490496033064"
+        target="_blank"
+        class="map-link"
+    >
+        <iframe
+            class="map-iframe"
+            src="https://www.google.com/maps?q=10.873585933134146,106.65490496033064&z=16&output=embed"
+            width="100%"
+            height="500"
+            loading="lazy">
+        </iframe>
+    </a>
+</div>
+
+
+
+<div class="map-container">
+    <a
+        href="https://www.google.com/maps?q=10.873585933134146,106.65490496033064"
+        target="_blank"
+        rel="noopener"
+        class="map-btn map-btn-primary"
+    >
+        <i class="fas fa-map-marked-alt"></i>
+        <span>Chỉ đường trên Google Maps</span>
+    </a>
+</div>
+
+
 
 <!-- ===== TRAINING LEVELS SECTION ===== -->
 <section id="training">
