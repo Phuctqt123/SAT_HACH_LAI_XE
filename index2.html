@@ -1054,6 +1054,107 @@
             opacity: 0.9;
             line-height: 1.6;
         }
+
+        .liet-badge {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 3px 10px;
+            font-size: 12px;
+            font-weight: bold;
+
+            color: #b71c1c;
+            background: #ffebee;
+            border: 1px solid #e53935;
+            border-radius: 10px;
+
+            animation: pulse 1.4s infinite;
+            }
+
+            @keyframes pulse {
+            0%   { box-shadow: 0 0 0 0 rgba(229,57,53,.5); }
+            70%  { box-shadow: 0 0 0 6px rgba(229,57,53,0); }
+            100% { box-shadow: 0 0 0 0 rgba(229,57,53,0); }
+            }
+
+            /* ===== LICENSE SELECT ===== */
+        .license-select-wrapper {
+            margin: 2rem auto;
+            text-align: center;
+            max-width: 360px;
+        }
+
+        .license-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+
+        .select-box {
+            position: relative;
+        }
+
+        .select-box select {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            padding-right: 3rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            background: var(--white);
+            color: var(--primary);
+            appearance: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .select-box select:hover {
+            border-color: var(--accent);
+        }
+
+        .select-box select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(6,182,212,0.25);
+        }
+
+        .select-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            font-size: 1rem;
+            color: var(--accent);
+        }
+
+
+        .time-info {
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .time-warning {
+            color: #f59e0b !important; /* vàng */
+        }
+
+        .time-danger {
+            color: #ef4444 !important; /* đỏ */
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0.4; }
+        }
+
+
+
     </style>
 </head>
 <body>
@@ -1094,7 +1195,11 @@
             <div class="quiz-info">
                 <span id="questionInfo">Câu hỏi 1 / 10</span>
                 <span id="scoreInfo">Điểm: 0/10</span>
+                <span id="timeInfo" class="time-info">
+                    ⏳ Thời gian: <b id="timeRemaining">00:00</b>
+                </span>
             </div>
+
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill" style="width: 10%;"></div>
             </div>
@@ -1150,7 +1255,7 @@
     </div>
 </div>
 
-<!-- Modal Lý Thuyết -->
+<!-- Modal Lý Thuyết (đã bổ sung chọn hạng) -->
 <div id="theoryModal" class="modal">
     <div class="modal-content">
         <div class="modal-icon theory">
@@ -1159,10 +1264,30 @@
         <div class="modal-header">Thi Thử Lý Thuyết</div>
         <div class="modal-description">
             <p>Kiểm tra kiến thức lý thuyết về luật giao thông và an toàn lái xe</p>
-            <p style="margin-top: 1rem; font-weight: 600; color: var(--accent);">📝 10 câu hỏi - Thời gian không giới hạn</p>
+            <p style="margin-top: 1rem; font-weight: 600; color: var(--accent);">📝 Số câu và thời gian tùy hạng</p>
         </div>
+
+        <!-- Chọn hạng bằng lái -->
+        <div class="license-select-wrapper">
+            <label for="licenseSelect" class="license-label">
+                <i class="fas fa-id-card"></i> Chọn hạng bằng lái
+            </label>
+
+            <div class="select-box">
+                <select id="licenseSelect">
+                    <option value="A1">A1</option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C1">C1</option>
+                    <option value="C">C</option>
+                    <option value="D1">D, E, CE,...</option>
+                </select>
+                <i class="fas fa-chevron-down select-icon"></i>
+            </div>
+        </div>
+
         <div class="modal-buttons">
-            <button class="modal-btn modal-btn-start" onclick="confirmStartQuiz('lyThuyet')">
+            <button class="modal-btn modal-btn-start" onclick="startTheoryQuiz()">
                 <i class="fas fa-play"></i> Bắt Đầu
             </button>
             <button class="modal-btn modal-btn-cancel" onclick="closeTheoryModal()">
@@ -1278,77 +1403,204 @@
     </div>
 </footer>
 
-<script src="data.js"></script>
+<!-- Load đúng cách -->
+<script type="module" src="examrandom.js"></script>
+<script type="module" src="theoryExam.js"></script>
+
 <script>
+    let countdownTimer = null;
+    let remainingSeconds = 0;
+
     let currentQuizType = '';
     let currentQuestionIndex = 0;
     let userAnswers = [];
     let score = 0;
+    let examQuestions = [];
+    let selectedLicenseType = 'B'; // Mặc định B
 
-    function startQuiz(quizType) {
-        currentQuizType = quizType;
-        currentQuestionIndex = 0;
-        userAnswers = new Array(quizData[quizType].length).fill(-1);
-        score = 0;
+    // Lắng nghe sự kiện đề thi sẵn sàng
+    document.addEventListener('examLoaded', function(e) {
+        console.log(`Đề thi sẵn sàng: ${e.detail.type} - ${e.detail.count} câu`);
+        // Có thể hiển thị thông báo hoặc enable nút nếu cần
+    });
 
-        // Mở quiz modal
-        document.getElementById('heroPage').classList.remove('active');
-        document.getElementById('quizModal').classList.add('active');
-        
-        // Cập nhật tiêu đề
-        const title = quizType === 'lyThuyet' ? 'Thi Thử Lý Thuyết' : 'Thi Thử Mô Phỏng';
-        document.getElementById('quizTitle').textContent = title;
-
-        // Hiển thị câu hỏi đầu tiên
-        displayQuestion();
+    function getTimeByLicense(license) {
+        const timeMap = {
+            A1: 19* 60,
+            A: 19 * 60,
+            B1: 20 * 60,
+            B: 22 * 60,
+            C1: 24 * 60,
+            C: 24 * 60,
+            D1: 26 * 60,
+            D2: 26 * 60,
+            D: 26 * 60,
+            C1E: 26 * 60,
+            CE: 26 * 60
+        };
+        return timeMap[license] || 20 * 60;
     }
 
-    function displayQuestion() {
-        const questions = quizData[currentQuizType];
-        const question = questions[currentQuestionIndex];
 
-        // Cập nhật thông tin câu hỏi
+    // ===== BẮT ĐẦU QUIZ LÝ THUYẾT (sau khi chọn hạng) =====
+    function startQuiz(quizType) {
+        if (!window.examQuestions || window.examQuestions.length === 0) {
+            alert("Đang tải câu hỏi cho hạng " + selectedLicenseType + ", vui lòng đợi...");
+            return;
+        }
+
+        examQuestions = window.examQuestions;
+        currentQuestionIndex = 0;
+        score = 0;
+        userAnswers = new Array(examQuestions.length).fill(null);
+
+        // ===== INIT TIMER =====
+        remainingSeconds = getTimeByLicense(selectedLicenseType);
+        startCountdown();
+
+        document.getElementById('heroPage').classList.remove('active');
+        document.getElementById('quizModal').classList.add('active');
+
+        document.getElementById('quizResultView').style.display = 'none';
+        document.getElementById('questionContainer').style.display = 'block';
+
+        displayQuestion();
+        closeTheoryModal();
+    }
+    function startTheoryQuiz() {
+        selectedLicenseType = document.getElementById('licenseSelect').value;
+        const displayLicense =
+        selectedLicenseType === 'D1'
+            ? 'D, E, CE, ...'
+            : selectedLicenseType === 'D2'
+                ? 'D, E, CE, ...'
+                : selectedLicenseType === 'C1E'
+                    ? 'C, CE'
+                    : selectedLicenseType;
+
+        document.getElementById('quizTitle').textContent =
+            `Thi Trắc Nghiệm Lý Thuyết Hạng ${displayLicense}`;
+
+
+        // Reload đề thi theo hạng mới
+        if (window.reloadExam) {
+            window.reloadExam(selectedLicenseType);
+        } else {
+            console.warn("Hàm reloadExam chưa sẵn sàng");
+        }
+
+        // Chờ một chút để đề load xong rồi mới start quiz
+        setTimeout(() => {
+            startQuiz('lyThuyet');
+        }, 800); // 0.8 giây chờ load (có thể điều chỉnh)
+    }
+
+    function startCountdown() {
+        clearInterval(countdownTimer);
+
+        updateTimeUI();
+
+        countdownTimer = setInterval(() => {
+            remainingSeconds--;
+
+            if (remainingSeconds <= 0) {
+                clearInterval(countdownTimer);
+                remainingSeconds = 0;
+                updateTimeUI();
+                finishQuiz(); // ⛔ Hết giờ → nộp bài
+                return;
+            }
+
+            updateTimeUI();
+        }, 1000);
+    }
+
+    function updateTimeUI() {
+        const min = Math.floor(remainingSeconds / 60);
+        const sec = remainingSeconds % 60;
+
+        const timeText = `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+        const timeEl = document.getElementById('timeRemaining');
+
+        timeEl.textContent = timeText;
+        timeEl.classList.remove('time-warning', 'time-danger');
+
+        if (remainingSeconds <= 300) {
+            timeEl.classList.add('time-warning'); // còn 5 phút
+        }
+        if (remainingSeconds <= 60) {
+            timeEl.classList.add('time-danger'); // còn 1 phút
+        }
+    }
+
+    // Các hàm modal và đóng khi click ngoài giữ nguyên như bạn có
+    function openTheoryModal() {
+        document.getElementById('theoryModal').classList.add('active');
+    }
+
+    function closeTheoryModal() {
+        document.getElementById('theoryModal').classList.remove('active');
+    }
+
+    // ===== HIỂN THỊ CÂU HỎI =====
+    function displayQuestion() {
+        const question = examQuestions[currentQuestionIndex];
+
+        // Kiểm tra an toàn dữ liệu
+        if (!question || typeof question !== 'object' || !question.options || !Array.isArray(question.options)) {
+            console.error("Câu hỏi không hợp lệ tại vị trí", currentQuestionIndex, question);
+            alert("Lỗi tải dữ liệu câu hỏi. Vui lòng tải lại trang.");
+            return;
+        }
+
         document.getElementById('questionNumber').textContent = `Câu ${currentQuestionIndex + 1}`;
         document.getElementById('questionText').textContent = question.question;
-        document.getElementById('questionInfo').textContent = `Câu hỏi ${currentQuestionIndex + 1} / ${questions.length}`;
-        document.getElementById('scoreInfo').textContent = `Điểm: ${calculateScore()}/${questions.length}`;
 
-        // Cập nhật progress bar
-        const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
-        document.getElementById('progressFill').style.width = progress + '%';
+        document.getElementById('questionInfo').textContent = 
+            `Câu hỏi ${currentQuestionIndex + 1} / ${examQuestions.length}`;
 
-        // Tạo danh sách các đáp án
+        document.getElementById('scoreInfo').textContent = 
+            `Điểm: ${calculateScore()}/${examQuestions.length}`;
+
+        const progress = ((currentQuestionIndex + 1) / examQuestions.length) * 100;
+        document.getElementById('progressFill').style.width = `${progress}%`;
+
         const answersList = document.getElementById('answersList');
         answersList.innerHTML = '';
 
-        question.answers.forEach((answer, index) => {
-            const isSelected = userAnswers[currentQuestionIndex] === index;
-            
+        question.options.forEach((opt, index) => {
+            const isChecked = userAnswers[currentQuestionIndex] === index;
+            const inputId = `opt-${currentQuestionIndex}-${index}`;
+
             const div = document.createElement('div');
-            div.className = `answer-option ${isSelected ? 'selected' : ''}`;
+            div.className = `answer-option ${isChecked ? 'selected' : ''}`;
             div.innerHTML = `
-                <input type="radio" id="answer${index}" name="answer" value="${index}" 
-                    ${isSelected ? 'checked' : ''} 
-                    onchange="selectAnswer(${index})">
-                <label for="answer${index}">${answer}</label>
+                <input type="radio" 
+                       name="answer" 
+                       id="${inputId}"
+                       ${isChecked ? 'checked' : ''}
+                       onchange="selectAnswer(${index})">
+                <label for="${inputId}">${opt.key}. ${opt.text}</label>
             `;
             answersList.appendChild(div);
         });
 
-        // Cập nhật trạng thái các nút
         document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
-        
-        const isLastQuestion = currentQuestionIndex === questions.length - 1;
-        document.getElementById('nextBtn').textContent = isLastQuestion 
-            ? 'Hoàn thành' 
-            : 'Câu tiếp theo ';
+
+        const nextBtn = document.getElementById('nextBtn');
+        nextBtn.innerHTML = currentQuestionIndex === examQuestions.length - 1
+            ? '<span>Hoàn thành</span><i class="fas fa-check"></i>'
+            : '<span>Câu tiếp theo</span><i class="fas fa-arrow-right"></i>';
     }
 
+    // ===== CHỌN ĐÁP ÁN =====
     function selectAnswer(index) {
         userAnswers[currentQuestionIndex] = index;
-        document.getElementById('scoreInfo').textContent = `Điểm: ${calculateScore()}/${quizData[currentQuizType].length}`;
+        document.getElementById('scoreInfo').textContent = 
+            `Điểm: ${calculateScore()}/${examQuestions.length}`;
     }
 
+    // ===== CÂU TRƯỚC =====
     function previousQuestion() {
         if (currentQuestionIndex > 0) {
             currentQuestionIndex--;
@@ -1356,215 +1608,222 @@
         }
     }
 
+    // ===== CÂU TIẾP / HOÀN THÀNH =====
     function nextQuestion() {
-        const questions = quizData[currentQuizType];
-        
-        if (currentQuestionIndex < questions.length - 1) {
+        if (currentQuestionIndex < examQuestions.length - 1) {
             currentQuestionIndex++;
             displayQuestion();
         } else {
-            // Hoàn thành quiz
             finishQuiz();
         }
     }
 
+    // ===== TÍNH ĐIỂM =====
     function calculateScore() {
-        const questions = quizData[currentQuizType];
-        let correctCount = 0;
-
-        userAnswers.forEach((answer, index) => {
-            if (answer === questions[index].correct) {
-                correctCount++;
+        let correct = 0;
+        examQuestions.forEach((q, i) => {
+            const selectedIndex = userAnswers[i];
+            if (selectedIndex !== null && q.options[selectedIndex]?.is_correct === true) {
+                correct++;
             }
         });
-
-        return correctCount;
+        return correct;
     }
+    function hasWrongLietQuestion() {
+        const lietIds = getLietQuestionIdsByLicense(currentLicenseType);
+
+        return examQuestions.some((q, i) => {
+            const selectedIndex = userAnswers[i];
+
+            // chưa trả lời → coi là sai
+            if (selectedIndex === null) {
+            return lietIds.includes(q.id);
+            }
+
+            const isCorrect = q.options[selectedIndex]?.is_correct === true;
+            return !isCorrect && lietIds.includes(q.id);
+        });
+    }
+
+    function getPassCondition(license) {
+        const map = {
+            A1: { total: 25, pass: 21 },
+            A:  { total: 25, pass: 23 },
+
+            B1: { total: 30, pass: 27 },
+            B:  { total: 30, pass: 27 },
+
+            C1: { total: 35, pass: 32 },
+            C:  { total: 40, pass: 36 },
+
+            D1: { total: 45, pass: 41 },
+            D2: { total: 45, pass: 41 },
+            D:  { total: 45, pass: 41 },
+
+            C1E:{ total: 45, pass: 41 },
+            CE: { total: 45, pass: 41 }
+        };
+        return map[license];
+    }
+
 
     function finishQuiz() {
-        const questions = quizData[currentQuizType];
-        const correctCount = calculateScore();
-        const percentage = Math.round((correctCount / questions.length) * 100);
-        const isPassed = percentage >= 80;
+        clearInterval(countdownTimer);
 
-        // Cập nhật kết quả trong modal
-        document.getElementById('quizResultView').style.display = 'block';
+        const correct = calculateScore();
+        const total = examQuestions.length;
+        const wrongLiet = hasWrongLietQuestion();
+
+        const passRule = getPassCondition(selectedLicenseType);
+        const passCount = passRule ? passRule.pass : Math.ceil(total * 0.8);
+
         document.getElementById('questionContainer').style.display = 'none';
-        
-        const resultScore = document.querySelector('#quizResultView #resultScore');
-        const resultMessage = document.querySelector('#quizResultView #resultMessage');
-        const resultIcon = document.querySelector('#quizResultView #resultIcon');
-        const resultDetails = document.querySelector('#quizResultView #resultDetails');
+        document.getElementById('quizResultView').style.display = 'block';
 
-        resultScore.textContent = `${correctCount}/${questions.length}`;
-        resultMessage.textContent = isPassed 
-            ? 'Chúc mừng, bạn đã đạt yêu cầu!' 
-            : 'Cần luyện tập thêm';
-        
-        resultIcon.className = `result-icon`;
-        resultIcon.innerHTML = isPassed 
-            ? '<i class="fas fa-check-circle" style="color: var(--accent);"></i>' 
-            : '<i class="fas fa-times-circle" style="color: #ef4444;"></i>';
-        
-        resultDetails.innerHTML = `
-            Bạn đã trả lời đúng <strong>${correctCount}/${questions.length}</strong> câu hỏi<br>
-            Tỷ lệ đúng: <strong>${percentage}%</strong>
-        `;
+        document.querySelector('#quizResultView #resultScore').textContent =
+            `${correct}/${total}`;
 
-        if (isPassed) {
-            resultMessage.style.color = 'var(--accent)';
+        let message = '';
+        let detail = '';
+
+        if (wrongLiet) {
+            message = '❌ Không đạt (Sai câu điểm liệt)';
+            detail = `
+                Bạn đã trả lời sai <b>câu điểm liệt</b><br>
+                Theo quy định: <b>sai câu liệt là không đạt</b>
+            `;
+        } else if (correct >= passCount) {
+            message = '🎉 ĐẠT';
+            detail = `
+                Số câu đúng: <b>${correct}/${total}</b><br>
+                Yêu cầu tối thiểu: <b>${passCount} câu đúng</b>
+            `;
         } else {
-            resultMessage.style.color = '#ef4444';
+            message = '❌ KHÔNG ĐẠT';
+            detail = `
+                Số câu đúng: <b>${correct}/${total}</b><br>
+                Yêu cầu tối thiểu: <b>${passCount} câu đúng</b>
+            `;
         }
+
+        document.querySelector('#quizResultView #resultMessage').textContent = message;
+        document.querySelector('#quizResultView #resultDetails').innerHTML = detail;
     }
 
+
+
+    // ===== XEM LẠI ĐÁP ÁN =====
     function reviewAnswers() {
-        const questions = quizData[currentQuizType];
         const correctCount = calculateScore();
-        const percentage = Math.round((correctCount / questions.length) * 100);
+        const percentage = Math.round((correctCount / examQuestions.length) * 100);
 
-        // Cập nhật tóm tắt kết quả
         document.getElementById('reviewSummary').textContent = 
-            `Bạn đã trả lời đúng ${correctCount}/${questions.length} câu hỏi - ${percentage}%`;
+            `Bạn đã trả lời đúng ${correctCount}/${examQuestions.length} câu - ${percentage}%`;
 
-        // Tạo danh sách các câu hỏi cần xem lại
-        const reviewContainer = document.getElementById('reviewItemsContainer');
-        reviewContainer.innerHTML = '';
+        const container = document.getElementById('reviewItemsContainer');
+        container.innerHTML = '';
 
-        questions.forEach((question, index) => {
-            const userAnswer = userAnswers[index];
-            const correctAnswer = question.correct;
-            const isCorrect = userAnswer === correctAnswer;
-            const isAnswered = userAnswer !== -1;
+        // 👉 LẤY DANH SÁCH ID CÂU LIỆT THEO HẠNG
+        const lietIds = getLietQuestionIdsByLicense(currentLicenseType);
+        examQuestions.forEach((q, i) => {
+            const userIndex = userAnswers[i];
+            const correctIndex = q.options.findIndex(o => o.is_correct === true);
+            const isCorrect = userIndex === correctIndex;
+
+            // 👉 KIỂM TRA CÂU LIỆT
+            const isLiet = lietIds.includes(q.id);
+
+            console.log(isLiet)
 
             const div = document.createElement('div');
             div.className = 'review-item';
 
-            // Header của câu hỏi
-            const header = document.createElement('div');
-            header.className = 'review-item-header';
-
-            const questionText = document.createElement('div');
-            questionText.className = 'review-question-text';
-            questionText.textContent = `Câu ${index + 1}: ${question.question}`;
-
-            const status = document.createElement('div');
-            status.className = `review-status ${isAnswered ? (isCorrect ? 'correct' : 'wrong') : 'unanswered'}`;
-            
-            if (isAnswered) {
-                status.innerHTML = isCorrect 
-                    ? '<i class="fas fa-check-circle"></i> Đúng' 
-                    : '<i class="fas fa-times-circle"></i> Sai';
-            } else {
-                status.innerHTML = '<i class="fas fa-question-circle"></i> Chưa trả lời';
-            }
-
-            header.appendChild(questionText);
-            header.appendChild(status);
-            div.appendChild(header);
-
-            // Phần đáp án
-            const answersSection = document.createElement('div');
-            answersSection.className = 'review-answers';
-
-            // Hiển thị đáp án người dùng chọn
-            if (isAnswered && !isCorrect) {
-                const userAnswerDiv = document.createElement('div');
-                userAnswerDiv.className = 'review-answer your-answer';
-                userAnswerDiv.innerHTML = `
-                    <div class="review-answer-icon">
-                        <i class="fas fa-user"></i>
+            div.innerHTML = `
+                <div class="review-item-header">
+                    <div class="review-question-text">
+                        Câu ${i + 1}: ${q.question}
+                        ${isLiet ? `<span class="liet-badge">⚠ Câu liệt</span>` : ''}
                     </div>
-                    <div>
-                        <div class="review-answer-label">👤 Đáp án của bạn (Sai)</div>
-                        <div class="review-answer-text">${question.answers[userAnswer]}</div>
+                    <div class="review-status ${isCorrect ? 'correct' : 'wrong'}">
+                        ${isCorrect ? '✔ Đúng' : '✘ Sai'}
                     </div>
-                `;
-                answersSection.appendChild(userAnswerDiv);
-            }
-
-            // Hiển thị đáp án đúng
-            const correctAnswerDiv = document.createElement('div');
-            correctAnswerDiv.className = 'review-answer correct-answer';
-            correctAnswerDiv.innerHTML = `
-                <div class="review-answer-icon">
-                    <i class="fas fa-check"></i>
                 </div>
-                <div>
-                    <div class="review-answer-label">✓ Đáp án đúng</div>
-                    <div class="review-answer-text">${question.answers[correctAnswer]}</div>
+
+                <div class="review-answers">
+                    ${userIndex !== null && !isCorrect ? `
+                        <div class="review-answer your-answer">
+                            👤 Bạn chọn: ${q.options[userIndex].key}. ${q.options[userIndex].text}
+                        </div>` : ''}
+                    <div class="review-answer correct-answer">
+                        ✓ Đáp án đúng: ${q.options[correctIndex].key}. ${q.options[correctIndex].text}
+                    </div>
                 </div>
             `;
-            answersSection.appendChild(correctAnswerDiv);
 
-            div.appendChild(answersSection);
-            reviewContainer.appendChild(div);
+            container.appendChild(div);
         });
 
-        // Ẩn modal quiz và hiển thị trang review
         document.getElementById('quizModal').classList.remove('active');
         document.getElementById('reviewPage').classList.add('active');
     }
 
+
+    // ===== LÀM LẠI TỪ TRANG REVIEW =====
     function restartQuizFromReview() {
         document.getElementById('reviewPage').classList.remove('active');
         
-        // Reset quiz
         currentQuestionIndex = 0;
-        userAnswers = new Array(quizData[currentQuizType].length).fill(-1);
+        userAnswers = new Array(examQuestions.length).fill(null);
         score = 0;
 
-        // Ẩn result view và hiển thị câu hỏi
         document.getElementById('quizResultView').style.display = 'none';
-        document.getElementById('questionContainer').style.display = 'flex';
+        document.getElementById('questionContainer').style.display = 'block';
 
-        // Mở lại modal và hiển thị câu hỏi đầu tiên
         document.getElementById('quizModal').classList.add('active');
         displayQuestion();
     }
 
+    // ===== QUAY VỀ TRANG CHỦ TỪ REVIEW =====
     function backToHomeFromReview() {
         document.getElementById('reviewPage').classList.remove('active');
         document.getElementById('heroPage').classList.add('active');
         
-        // Reset quiz
         currentQuestionIndex = 0;
         userAnswers = [];
         score = 0;
     }
 
+    // ===== QUAY VỀ TRANG CHỦ TỪ KẾT QUẢ =====
     function backToHome() {
         document.getElementById('resultPage').classList.remove('active');
         document.getElementById('heroPage').classList.add('active');
     }
 
+    // ===== LÀM LẠI QUIZ (từ kết quả) =====
     function restartQuiz() {
-        // Reset quiz
         currentQuestionIndex = 0;
-        userAnswers = new Array(quizData[currentQuizType].length).fill(-1);
+        userAnswers = new Array(examQuestions.length).fill(null);
         score = 0;
 
-        // Ẩn result view và hiển thị câu hỏi
         document.getElementById('quizResultView').style.display = 'none';
-        document.getElementById('questionContainer').style.display = 'flex';
+        document.getElementById('questionContainer').style.display = 'block';
 
-        // Hiển thị câu hỏi đầu tiên
         displayQuestion();
     }
 
+    // ===== QUAY VỀ TRANG CHỦ TỪ MODAL QUIZ =====
     function backToHomeFromQuiz() {
         document.getElementById('quizModal').classList.remove('active');
         document.getElementById('heroPage').classList.add('active');
         
-        // Reset quiz
         currentQuestionIndex = 0;
         userAnswers = [];
         score = 0;
         document.getElementById('quizResultView').style.display = 'none';
-        document.getElementById('questionContainer').style.display = 'flex';
+        document.getElementById('questionContainer').style.display = 'block';
     }
 
-    // ===== MODAL FUNCTIONS =====
+    // ===== CÁC HÀM MỞ/ĐÓNG MODAL =====
     function openTheoryModal() {
         document.getElementById('theoryModal').classList.add('active');
     }
@@ -1582,6 +1841,7 @@
     }
 
     function confirmStartQuiz(quizType) {
+        currentQuizType = quizType;
         if (quizType === 'lyThuyet') {
             closeTheoryModal();
         } else {
@@ -1591,25 +1851,20 @@
     }
 
     function closeQuizModal() {
+        clearInterval(countdownTimer);
         document.getElementById('quizModal').classList.remove('active');
         document.getElementById('heroPage').classList.add('active');
     }
 
-    // Đóng modal khi click bên ngoài
+    // ===== ĐÓNG MODAL KHI CLICK BÊN NGOÀI =====
     window.addEventListener('click', function(event) {
-        const theoryModal = document.getElementById('theoryModal');
-        const practiceModal = document.getElementById('practiceModal');
-        const quizModal = document.getElementById('quizModal');
-        
-        if (event.target === theoryModal) {
-            closeTheoryModal();
-        }
-        if (event.target === practiceModal) {
-            closePracticeModal();
-        }
-        if (event.target === quizModal) {
-            closeQuizModal();
-        }
+        const theory = document.getElementById('theoryModal');
+        const practice = document.getElementById('practiceModal');
+        const quiz = document.getElementById('quizModal');
+
+        if (event.target === theory) closeTheoryModal();
+        if (event.target === practice) closePracticeModal();
+        if (event.target === quiz) closeQuizModal();
     });
 </script>
 
