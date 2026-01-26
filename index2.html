@@ -1154,6 +1154,78 @@
         }
 
 
+        /* Trạng thái mặc định: không màu, viền nhẹ, chữ xám */
+        .modal-btn-group {
+            background: #f1f5f9; /* xám nhạt */
+            color: #475569;
+            border: 2px solid #cbd5e1;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            cursor: pointer;
+        }
+
+        .modal-btn-group:hover {
+            background: #e2e8f0;
+            border-color: #94a3b8;
+            transform: translateY(-2px);
+        }
+
+        /* Trạng thái đã chọn: có màu gradient, nổi bật */
+        .modal-btn-group.active {
+            color: white;
+            border: none;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            transform: translateY(-4px);
+        }
+
+        /* Active cho A_A1 (tím) */
+        .modal-btn-group.active.a1 {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        }
+
+        /* Active cho B_CD (xanh lá) */
+        .modal-btn-group.active.bcd {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        /* Nút đóng modal Ôn tập - góc trên phải, màu đỏ */
+        .close-review-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .close-review-btn:hover {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.5);
+        }
+
+        /* Đảm bảo modal-content có position relative để nút absolute hoạt động */
+        .modal-content {
+            position: relative !important;
+        }
 
     </style>
 </head>
@@ -1297,6 +1369,8 @@
     </div>
 </div>
 
+
+
 <!-- Modal Mô Phỏng -->
 <div id="practiceModal" class="modal">
     <div class="modal-content">
@@ -1319,6 +1393,59 @@
     </div>
 </div>
 
+<!-- Modal Ôn tập - Chọn nhóm hạng & Chương -->
+<div id="reviewSelectModal" class="modal">
+    <div class="modal-content" style="max-width: 600px;">
+        <!-- Nút Hủy màu đỏ ở góc trên phải -->
+        <button class="close-review-btn" onclick="closeReviewSelectModal()" title="Đóng">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="modal-icon theory">
+            <i class="fas fa-graduation-cap"></i>
+        </div>
+        <div class="modal-header">Ôn Tập Theo Chương</div>
+        <div class="modal-description">
+            Chọn nhóm hạng → chọn chương → ôn tập không thời gian, xem đáp án ngay
+        </div>
+
+        <!-- Bước 1: Chọn nhóm hạng -->
+        <div style="margin: 1.5rem 0; text-align: center;">
+            <label class="license-label" style="font-size: 1.1rem; margin-bottom: 1rem; display: block;">
+                <i class="fas fa-id-card"></i> Chọn nhóm hạng
+            </label>
+            <div style="display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap;">
+                <button class="modal-btn-group a1" onclick="selectReviewGroup('A_A1')">
+                    <i class="fas fa-motorcycle"></i> A, A1 (xe máy)
+                </button>
+                <button class="modal-btn-group bcd" onclick="selectReviewGroup('B_CD')">
+                    <i class="fas fa-car"></i> B, C, D,... (ô tô & hạng nặng)
+                </button>
+            </div>
+        </div>
+
+        <!-- Bước 2: Chọn chương (ẩn ban đầu, hiện khi chọn nhóm) -->
+        <div id="chapterSelectSection" style="display: none; margin: 2rem 0;">
+            <label class="license-label" style="font-size: 1.1rem; margin-bottom: 1rem; display: block;">
+                <i class="fas fa-list-ol"></i> Chọn chương để ôn
+            </label>
+            <div class="select-box" style="max-width: 100%;">
+                <select id="chapterSelect" style="width: 100%; padding: 1rem; font-size: 1.1rem;">
+                    <!-- Options sẽ được điền động bằng JS -->
+                </select>
+                <i class="fas fa-chevron-down select-icon"></i>
+            </div>
+
+            <div style="margin-top: 2rem; text-align: center;">
+                <button class="modal-btn modal-btn-start" onclick="startReviewWithChapter()"
+                        style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); min-width: 200px; font-size: 1.2rem;">
+                    <i class="fas fa-play"></i> Bắt đầu ôn chương này
+                </button>
+            </div>
+        </div>
+
+        
+    </div>
+</div>
 <!-- ===== MAIN CONTENT ===== -->
 <div class="main-content">
     <div class="container">
@@ -1331,6 +1458,12 @@
                 <button class="quiz-btn theory" onclick="openTheoryModal()">
                     <i class="fas fa-book"></i>
                     <span>Thi Thử Lý Thuyết</span>
+                </button>
+                <!-- Nút mới -->
+                <button class="quiz-btn review" onclick="openReviewModal()"
+                    style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Ôn Tập Lý Thuyết</span>
                 </button>
                 <button class="quiz-btn practice" onclick="openPracticeModal()">
                     <i class="fas fa-car"></i>
@@ -1543,6 +1676,15 @@
     }
 
     // ===== HIỂN THỊ CÂU HỎI =====
+    // Định nghĩa mảng số thứ tự câu hỏi có hình (bạn tự cập nhật danh sách này)
+    const questionsWithImageNumbers = [
+    36, 37,
+    227, 228, 229, 230, 231,
+    286, 287, 288, 289, 290,
+    ...Array.from({ length: 600 - 295 + 1 }, (_, i) => i + 295)
+    ];
+
+
     function displayQuestion() {
         const question = examQuestions[currentQuestionIndex];
 
@@ -1565,6 +1707,61 @@
         const progress = ((currentQuestionIndex + 1) / examQuestions.length) * 100;
         document.getElementById('progressFill').style.width = `${progress}%`;
 
+        // === XỬ LÝ HÌNH ẢNH ===
+        // Xóa hình cũ nếu có (tránh chồng hình khi chuyển câu)
+        const oldImageContainer = document.querySelector('.question-image-container');
+        if (oldImageContainer) oldImageContainer.remove();
+
+        // Lấy số thứ tự của câu hỏi hiện tại
+        let questionNumber = null;
+
+        // Cách 1: Nếu question.id là số trực tiếp (phổ biến nhất)
+        if (typeof question.id === 'number') {
+            questionNumber = question.id;
+        }
+        // Cách 2: Nếu id là chuỗi kiểu "001", "B001", "C045" → lấy phần số
+        else if (typeof question.id === 'string') {
+            const match = question.id.match(/\d+/); // lấy dãy số đầu tiên
+            if (match) {
+                questionNumber = parseInt(match[0], 10);
+            }
+        }
+        // Cách 3: Fallback - dùng thứ tự hiển thị (Câu 1 → 1, Câu 2 → 2, ...)
+        if (!questionNumber) {
+            questionNumber = currentQuestionIndex + 1;
+        }
+
+        // Kiểm tra xem câu này có trong danh sách có hình không
+        if (questionsWithImageNumbers.includes(questionNumber)) {
+            const imageContainer = document.createElement('div');
+            imageContainer.className = 'question-image-container';
+            imageContainer.style.cssText = 'margin: 1.2rem 0; text-align: center; padding: 0 1rem;';
+
+            const img = document.createElement('img');
+            img.src = `https://taplai.com/img/600cau2025/${questionNumber}.webp`;  // tên file: 1.png, 5.png, ...
+            img.alt = `Hình minh họa câu ${questionNumber}`;
+            img.style.cssText = 'max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); cursor: zoom-in;';
+            img.loading = 'lazy';
+
+            // Click để mở hình to trong tab mới
+            img.onclick = function() {
+                window.open(this.src, '_blank');
+            };
+
+            // Xử lý khi hình không tồn tại
+            img.onerror = function() {
+                this.src = 'images/placeholder.png'; // ảnh mặc định
+                this.alt = 'Hình ảnh đang cập nhật hoặc không tồn tại';
+                console.warn(`Không tìm thấy hình: https://taplai.com/img/600cau2025/${questionNumber}.webp`);
+            };
+
+            imageContainer.appendChild(img);
+            
+            // Chèn hình ngay sau nội dung câu hỏi
+            document.getElementById('questionText').insertAdjacentElement('afterend', imageContainer);
+        }
+
+        // === PHẦN ĐÁP ÁN ===
         const answersList = document.getElementById('answersList');
         answersList.innerHTML = '';
 
@@ -1576,10 +1773,10 @@
             div.className = `answer-option ${isChecked ? 'selected' : ''}`;
             div.innerHTML = `
                 <input type="radio" 
-                       name="answer" 
-                       id="${inputId}"
-                       ${isChecked ? 'checked' : ''}
-                       onchange="selectAnswer(${index})">
+                    name="answer" 
+                    id="${inputId}"
+                    ${isChecked ? 'checked' : ''}
+                    onchange="selectAnswer(${index})">
                 <label for="${inputId}">${opt.key}. ${opt.text}</label>
             `;
             answersList.appendChild(div);
@@ -1866,6 +2063,336 @@
         if (event.target === practice) closePracticeModal();
         if (event.target === quiz) closeQuizModal();
     });
+
+
+    function openReviewModal() {
+    document.getElementById('reviewSelectModal').classList.add('active');
+}
+
+function closeReviewSelectModal() {
+    document.getElementById('reviewSelectModal').classList.remove('active');
+}
+
+// Chế độ ôn tập (không tính giờ, hiện đáp án ngay)
+function startReviewMode(group) {
+    // Quyết định hạng mặc định theo nhóm
+    let defaultLicense = group === 'A_A1' ? 'A1' : 'B';
+
+    // Đặt lại biến
+    selectedLicenseType = defaultLicense;
+    currentQuizType = 'ontap';
+    
+    // Load đề theo hạng (giống thi thử)
+    if (window.reloadExam) {
+        window.reloadExam(selectedLicenseType);
+    }
+
+    // Chờ load xong (tương tự startTheoryQuiz)
+    setTimeout(() => {
+        if (!window.examQuestions || window.examQuestions.length === 0) {
+            alert("Chưa tải được câu hỏi. Vui lòng thử lại.");
+            return;
+        }
+
+        examQuestions = window.examQuestions;
+        currentQuestionIndex = 0;
+        userAnswers = new Array(examQuestions.length).fill(null);
+        
+        // Không dùng timer trong chế độ ôn tập
+        clearInterval(countdownTimer);
+        document.getElementById('timeInfo').style.display = 'none';  // ẩn thời gian
+
+        // Đổi tiêu đề
+        document.getElementById('quizTitle').textContent = 
+            `Ôn Tập Lý Thuyết Hạng ${group === 'A_A1' ? 'A, A1' : 'B, C, D,...'}`;
+
+        // Hiện quiz modal
+        document.getElementById('heroPage').classList.remove('active');
+        document.getElementById('quizModal').classList.add('active');
+        document.getElementById('quizResultView').style.display = 'none';
+        document.getElementById('questionContainer').style.display = 'block';
+
+        displayQuestionReviewMode();
+
+        // Đóng modal chọn
+        closeReviewSelectModal();
+    }, 800);
+}
+
+    // Hàm hiển thị câu hỏi ở chế độ ÔN TẬP
+    // Định nghĩa mảng số thứ tự câu hỏi có hình (bạn tự cập nhật danh sách này)
+    
+
+    function displayQuestionReviewMode() {
+        const question = examQuestions[currentQuestionIndex];
+        if (!question) return;
+
+        document.getElementById('questionNumber').textContent = `Câu ${currentQuestionIndex + 1}`;
+        document.getElementById('questionText').textContent = question.question;
+
+        document.getElementById('questionInfo').textContent = 
+            `Câu ${currentQuestionIndex + 1} / ${examQuestions.length} - Ôn tập`;
+
+        // Ẩn điểm số và thời gian trong ôn tập
+        document.getElementById('scoreInfo').style.display = 'none';
+        document.getElementById('timeInfo').style.display = 'none';
+
+        const progress = ((currentQuestionIndex + 1) / examQuestions.length) * 100;
+        document.getElementById('progressFill').style.width = `${progress}%`;
+
+        // === XỬ LÝ HÌNH ẢNH ===
+        // Xóa hình cũ nếu có (tránh chồng hình khi chuyển câu)
+        const oldImageContainer = document.querySelector('.question-image-container');
+        if (oldImageContainer) oldImageContainer.remove();
+
+        // Lấy số thứ tự của câu hỏi hiện tại
+        let questionNumber = null;
+
+        // Cách 1: Nếu question.id là số trực tiếp (phổ biến nhất với bạn)
+        if (typeof question.id === 'number') {
+            questionNumber = question.id;
+        }
+        // Cách 2: Nếu id là chuỗi kiểu "001", "B001", "C045" → lấy phần số
+        else if (typeof question.id === 'string') {
+            const match = question.id.match(/\d+/); // lấy dãy số đầu tiên
+            if (match) {
+                questionNumber = parseInt(match[0], 10);
+            }
+        }
+        // Cách 3: Fallback - dùng thứ tự hiển thị (Câu 1 → 1, Câu 2 → 2, ...)
+        if (!questionNumber) {
+            questionNumber = currentQuestionIndex + 1;
+        }
+
+        // Kiểm tra xem câu này có trong danh sách có hình không
+        if (questionsWithImageNumbers.includes(questionNumber)) {
+            const imageContainer = document.createElement('div');
+            imageContainer.className = 'question-image-container';
+            imageContainer.style.cssText = 'margin: 1.5rem auto; text-align: center; max-width: 90%; padding: 0 1rem;';
+
+            const img = document.createElement('img');
+            img.src = `https://taplai.com/img/600cau2025/${questionNumber}.webp`;  // tên file: 1.png, 5.png, ...
+            img.alt = `Hình minh họa câu ${questionNumber}`;
+            img.style.cssText = 'max-width: 100%; max-height: 450px; height: auto; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.2); cursor: zoom-in;';
+            img.loading = 'lazy'; // tối ưu tải trang
+
+            // Click để mở hình to trong tab mới
+            img.onclick = function() {
+                window.open(this.src, '_blank');
+            };
+
+            // Xử lý khi hình không tồn tại (rất quan trọng)
+            img.onerror = function() {
+                this.src = 'images/placeholder.png'; // ảnh mặc định (bạn nên tạo file này)
+                this.alt = 'Hình ảnh đang cập nhật hoặc không tồn tại';
+                console.warn(`Không tìm thấy hình: images/${questionNumber}.png`);
+            };
+
+            imageContainer.appendChild(img);
+            
+            // Chèn hình ngay sau nội dung câu hỏi
+            document.getElementById('questionText').insertAdjacentElement('afterend', imageContainer);
+        }
+
+        // === PHẦN ĐÁP ÁN ===
+        const answersList = document.getElementById('answersList');
+        answersList.innerHTML = '';
+
+        question.options.forEach((opt, index) => {
+            const inputId = `opt-${currentQuestionIndex}-${index}`;
+            const isCorrect = opt.is_correct === true;
+
+            const div = document.createElement('div');
+            div.className = `answer-option ${isCorrect ? 'correct' : ''}`;
+            if (userAnswers[currentQuestionIndex] === index) {
+                div.classList.add('selected');
+            }
+
+            div.innerHTML = `
+                <input type="radio" 
+                    name="answer" 
+                    id="${inputId}"
+                    ${userAnswers[currentQuestionIndex] === index ? 'checked' : ''}
+                    onchange="selectAnswerReview(${index})">
+                <label for="${inputId}">${opt.key}. ${opt.text}</label>
+            `;
+
+            // Nếu đã chọn → hiện ngay màu đúng/sai
+            if (userAnswers[currentQuestionIndex] !== null) {
+                if (isCorrect) {
+                    div.classList.add('correct');
+                } else if (userAnswers[currentQuestionIndex] === index) {
+                    div.classList.add('wrong');
+                }
+            }
+
+            answersList.appendChild(div);
+        });
+
+        document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+        
+        const nextBtn = document.getElementById('nextBtn');
+        nextBtn.innerHTML = currentQuestionIndex === examQuestions.length - 1
+            ? '<span>Kết thúc ôn tập</span><i class="fas fa-check"></i>'
+            : '<span>Câu tiếp theo</span><i class="fas fa-arrow-right"></i>';
+    }
+    // Khi chọn đáp án trong ôn tập → hiện ngay kết quả
+    function selectAnswerReview(index) {
+        userAnswers[currentQuestionIndex] = index;
+        displayQuestionReviewMode();  // reload để hiện màu đúng/sai ngay
+    }
+
+    // Override next/prev cho chế độ ôn tập
+    function nextQuestion() {
+        if (currentQuizType === 'ontap') {
+            if (currentQuestionIndex < examQuestions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestionReviewMode();
+            } else {
+                // Kết thúc ôn tập → có thể quay về trang chủ hoặc hiện thống kê nhẹ
+                alert("Bạn đã xem hết bộ câu hỏi ôn tập!");
+                backToHomeFromQuiz();
+            }
+        } else {
+            // logic thi thử cũ
+            if (currentQuestionIndex < examQuestions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+    }
+
+    function previousQuestion() {
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--;
+            if (currentQuizType === 'ontap') {
+                displayQuestionReviewMode();
+            } else {
+                displayQuestion();
+            }
+        }
+    }
+
+    let currentReviewGroup = ''; // 'A_A1' hoặc 'B_CD'
+    let selectedChapter = 0;     // số chương được chọn (1,2,3,...)
+
+    // Danh sách chương theo nhóm
+    const chaptersA_A1 = [
+        { num: 1, name: "Chương I: Quy định chung và quy tắc giao thông đường bộ" },
+        { num: 2, name: "Chương II: Văn hóa giao thông, đạo đức người lái xe" },
+        { num: 3, name: "Chương III: Nhóm câu hỏi Kỹ thuật lái xe" },
+        { num: 4, name: "Chương IV: Báo hiệu đường bộ" },
+        { num: 5, name: "Chương V: Giải thế sa hình và kỹ năng xử lý tình huống giao thông" }
+    ];
+
+    const chaptersB_CD = [
+        { num: 1, name: "Chương I: Quy định chung và quy tắc giao thông đường bộ (câu 1-180)" },
+        { num: 2, name: "Chương II: Văn hóa giao thông, đạo đức người lái xe, kỹ năng phòng cháy, chữa cháy và cứu hộ, cứu nạn" },
+        { num: 3, name: "Chương III: Kỹ thuật lái xe" },
+        { num: 4, name: "Chương IV: Cấu tạo và sửa chữa" },
+        { num: 5, name: "Chương V: Báo hiệu đường bộ" },
+        { num: 6, name: "Chương VI: Giải thế sa hình và kỹ năng xử lý tình huống giao thông" }
+    ];
+
+    function openReviewModal() {
+        document.getElementById('reviewSelectModal').classList.add('active');
+        // Reset khi mở lại
+        currentReviewGroup = '';
+        document.getElementById('chapterSelectSection').style.display = 'none';
+    }
+
+    function closeReviewSelectModal() {
+        document.getElementById('reviewSelectModal').classList.remove('active');
+    }
+
+    function selectReviewGroup(group) {
+        currentReviewGroup = group;
+
+        // Xóa active ở tất cả nút trước
+        document.querySelectorAll('.modal-btn-group').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        // Sửa: map group sang class tương ứng
+        let classSuffix = group === 'A_A1' ? 'a1' : 'bcd';
+
+        // Thêm active cho nút được chọn
+        const selectedBtn = document.querySelector(`.modal-btn-group.${classSuffix}`);
+        if (selectedBtn) {
+            selectedBtn.classList.add('active');
+        }
+
+        // Phần còn lại giữ nguyên...
+        const chapters = group === 'A_A1' ? chaptersA_A1 : chaptersB_CD;
+        const select = document.getElementById('chapterSelect');
+        select.innerHTML = '<option value="0">--- Chọn chương ---</option>';
+        chapters.forEach(ch => {
+            const opt = document.createElement('option');
+            opt.value = ch.num;
+            opt.textContent = ch.name;
+            select.appendChild(opt);
+        });
+        document.getElementById('chapterSelectSection').style.display = 'block';
+    }
+
+    function startReviewWithChapter() {
+        selectedChapter = parseInt(document.getElementById('chapterSelect').value);
+        if (selectedChapter === 0) {
+            alert("Vui lòng chọn chương!");
+            return;
+        }
+
+        // Quyết định hạng mặc định để load đề
+        let defaultLicense = currentReviewGroup === 'A_A1' ? 'A1' : 'B';
+
+        selectedLicenseType = defaultLicense;
+        currentQuizType = 'ontap';
+
+        // Gọi hàm load câu hỏi với tham số chương
+        if (window.reloadExamWithChapter) {
+            window.reloadExamWithChapter(selectedLicenseType, selectedChapter);
+        }  else {
+            alert("Chưa sẵn sàng tải câu hỏi. Vui lòng kiểm tra file JS.");
+            return;
+        }
+
+        // Chờ load (tăng thời gian chờ nếu cần)
+        setTimeout(() => {
+            if (!window.examQuestions || window.examQuestions.length === 0) {
+                alert("Không tải được câu hỏi cho chương này.");
+                return;
+            }
+
+            // Nếu load full → filter theo chương (nếu backend chưa hỗ trợ filter)
+            // Giả sử câu hỏi có trường chapterNum hoặc dựa vào range câu số
+            examQuestions = window.examQuestions.filter(q => {
+                // Ví dụ: nếu q.id hoặc q.number nằm trong range của chương
+                // Bạn cần định nghĩa range cho từng chương trong file theoryExam.js hoặc examrandom.js
+                // Hoặc backend trả về chỉ câu của chương
+                return true; // tạm thời giữ full, sau filter thật
+            });
+
+            currentQuestionIndex = 0;
+            userAnswers = new Array(examQuestions.length).fill(null);
+
+            clearInterval(countdownTimer);
+            document.getElementById('timeInfo').style.display = 'none';
+
+            document.getElementById('quizTitle').textContent = 
+                `Ôn Tập Chương ${selectedChapter} - ${currentReviewGroup === 'A_A1' ? 'A, A1' : 'B, C, D,...'}`;
+
+            document.getElementById('heroPage').classList.remove('active');
+            document.getElementById('quizModal').classList.add('active');
+            document.getElementById('quizResultView').style.display = 'none';
+            document.getElementById('questionContainer').style.display = 'block';
+
+            displayQuestionReviewMode();
+
+            closeReviewSelectModal();
+        }, 1000); // chờ 1 giây để load
+    }
 </script>
 
 </body>

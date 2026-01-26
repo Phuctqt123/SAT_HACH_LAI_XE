@@ -136,5 +136,108 @@ window.reloadExam = function(newLicenseType) {
   loadQuestions(newLicenseType);
 };
 
+
+
+/**
+ * Reload đề thi chỉ cho một chương cụ thể (dùng cho chế độ Ôn tập)
+ * @param {string} licenseType - hạng bằng (A1, B, C, ...)
+ * @param {number} chapterNum - số chương (1 → Chương I, 2 → Chương II, ...)
+ */
+window.reloadExamWithChapter = async function(licenseType, chapterNum) {
+  currentLicenseType = licenseType;
+  window.currentLicenseType = licenseType;
+
+  try {
+    // Load toàn bộ chapters từ JSON (giống loadQuestions)
+    const res = await fetch("./questions.json");
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+    const chapters = await res.json();
+
+    let selectedQuestions = [];
+
+    if (licenseType === "A1" || licenseType === "A") {
+      // Đặc biệt cho A1/A: dùng A1A_POOLS
+      const pools = A1A_POOLS;
+
+      // Mapping chương → pool
+      const chapterToPool = {
+        1: [...pools.rules, ...pools.liet],     // Chương I: Quy định chung + điểm liệt
+        2: pools.culture,
+        3: pools.tech,
+        4: pools.signals,
+        5: pools.sahinh
+      };
+
+      const pool = chapterToPool[chapterNum] || [];
+      if (pool.length === 0) {
+        throw new Error(`Chương ${chapterNum} không có câu hỏi cho hạng A/A1`);
+      }
+
+      // Lấy đầy đủ object câu hỏi từ pool ID
+      const qmap = buildQuestionMap(chapters);
+      selectedQuestions = pool
+        .map(id => {
+          for (const chId in qmap) {
+            const found = qmap[chId].find(q => q.id === id);
+            if (found) return found;
+          }
+          return null;
+        })
+        .filter(Boolean); // loại bỏ null nếu ID không tồn tại
+
+    } else {
+      // Với hạng B, C, D,... : filter theo chapter.id
+      const chapterKeyMap = {
+        1: "I",   // RULES
+        2: "II",  // CULTURE
+        3: "III", // TECH_DRIVING
+        4: "IV",  // STRUCTURE
+        5: "V",   // SIGNALS
+        6: "VI"   // SITUATIONS
+      };
+
+      const targetChapterId = chapterKeyMap[chapterNum];
+      if (!targetChapterId) {
+        throw new Error(`Chương ${chapterNum} không hợp lệ cho hạng ${licenseType}`);
+      }
+
+      // Tìm chapter có id tương ứng
+      const targetChapter = chapters.find(ch => ch.id === targetChapterId);
+      if (!targetChapter || !targetChapter.questions) {
+        throw new Error(`Không tìm thấy chương ${targetChapterId} trong questions.json`);
+      }
+
+      // Lấy tất cả câu hỏi của chương (bốc hết, không random)
+      selectedQuestions = targetChapter.questions;
+
+      // Nếu muốn loại điểm liệt ra khỏi ôn tập (tuỳ chọn)
+      // selectedQuestions = selectedQuestions.filter(q => !LIET_QUESTIONS.includes(q.id));
+    }
+
+    if (selectedQuestions.length === 0) {
+      throw new Error(`Không có câu hỏi nào cho chương ${chapterNum}`);
+    }
+
+    // Lưu vào window.examQuestions
+    window.examQuestions = selectedQuestions;
+
+    console.log(`✅ Ôn tập chương ${chapterNum} - ${licenseType}: ${selectedQuestions.length} câu`);
+
+    // Dispatch event để UI biết
+    document.dispatchEvent(new CustomEvent('examLoaded', { 
+      detail: { 
+        type: 'ontap', 
+        license: licenseType,
+        chapter: chapterNum,
+        count: selectedQuestions.length 
+      } 
+    }));
+
+  } catch (err) {
+    console.error("❌ Lỗi reloadExamWithChapter:", err);
+    alert(`Không thể tải câu hỏi chương ${chapterNum}. Lỗi: ${err.message}`);
+  }
+};
+
 // Load đề mặc định khi trang mở
 loadQuestions(currentLicenseType);
