@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thi mô phỏng - Chế độ Review</title>
+    <title>Thi thử 10 câu - Bài thi mô phỏng</title>
     <link rel="icon" href="../../logo_DK.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -16,7 +16,7 @@
 
         :root {
             --primary: #0f172a;
-            --primary-light:rgb(13, 17, 24);
+            --primary-light: rgb(13, 17, 24);
             --accent: #06b6d4;
             --accent-dark: #0891b2;
             --success: #10b981;
@@ -28,9 +28,7 @@
             --white: #ffffff;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
+       
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
@@ -77,93 +75,34 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            transition: all 0.3s ease;
             white-space: nowrap;
-        }
-
-        .logo:hover {
-            color: var(--accent);
         }
 
         .logo span {
             color: var(--accent);
             font-weight: 800;
-            transition: all 0.3s ease;
             margin-left: 0.5rem;
         }
 
-        .logo span:hover {
-            text-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
+        .header-info {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            flex: 1;
+            justify-content: flex-end;
         }
 
-        marquee {
-            flex: 1;
+        .info-box {
+            background: rgba(6, 182, 212, 0.1);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent);
             font-size: 0.95rem;
             font-weight: 600;
-            color: var(--primary);
-            background: linear-gradient(135deg, #cffafe 0%, #e0f2fe 100%);
-            padding: 0.8rem 1rem;
-            border-radius: 8px;
         }
 
-        /* ===== FLOATING CONTACT ICONS ===== */
-        .floating-contact {
-            position: fixed;
-            right: 2rem;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            z-index: 999;
-        }
-
-        .contact-btn {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            background: var(--accent);
-            color: var(--white);
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 24px rgba(6, 182, 212, 0.3);
-            text-decoration: none;
-        }
-
-        .contact-btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 12px 32px rgba(6, 182, 212, 0.4);
-            background: var(--accent-dark);
-        }
-
-        .contact-btn.facebook {
-            background: #1877f2;
-        }
-
-        .contact-btn.facebook:hover {
-            background: #1567d4;
-        }
-
-        .contact-btn.zalo {
-            background: #0084ff;
-        }
-
-        .contact-btn.zalo:hover {
-            background: #0070d4;
-        }
-
-        @media (max-width: 768px) {
-            .floating-contact {
-                right: 1rem;
-                top: auto;
-                bottom: 2rem;
-                flex-direction: row;
-            }
+        .info-box strong {
+            color: var(--accent);
         }
 
         /* ===== MAIN CONTENT ===== */
@@ -188,42 +127,11 @@
         }
 
         .exam-area {
-            flex: 3;
+            flex: 1;
             background: var(--white);
             padding: 2.5rem;
             border-radius: 16px;
             box-shadow: 0 20px 50px rgba(15, 23, 42, 0.1);
-            text-align: center;
-        }
-
-        .question-list-area {
-            flex: 1;
-            background: var(--white);
-            padding: 1.5rem;
-            border-radius: 16px;
-            box-shadow: 0 20px 50px rgba(15, 23, 42, 0.1);
-            max-height: 85vh;
-            overflow-y: auto;
-            position: sticky;
-            top: 110px;
-        }
-
-        .question-list-area::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .question-list-area::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 10px;
-        }
-
-        .question-list-area::-webkit-scrollbar-thumb {
-            background: var(--accent);
-            border-radius: 10px;
-        }
-
-        .question-list-area::-webkit-scrollbar-thumb:hover {
-            background: var(--accent-dark);
         }
 
         h1 {
@@ -255,15 +163,35 @@
             color: var(--accent);
         }
 
+        /* ===== VIDEO CONTAINER ===== */
+        .video-container {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+            margin: 2rem auto;
+            justify-content: center;
+        }
+
+        .video-wrapper {
+            flex: 1;
+            max-width: 800px;
+        }
+
+        .video-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            min-width: 160px;
+        }
+
         /* ===== VIDEO PLAYER ===== */
         video {
             width: 100%;
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             border-radius: 12px;
-            pointer-events: none;
-            min-height: 400px;
+            height: auto;
+            display: block;
             box-shadow: 0 10px 30px rgba(6, 182, 212, 0.1);
-            margin-bottom: 2rem;
             overflow: hidden;
         }
 
@@ -327,11 +255,10 @@
             position: absolute;
             top: 0;
             height: 100%;
-            opacity: 2;
+            opacity: 0.8;
             z-index: 5;
         }
-        
-        
+
         .zone.s5 { background: var(--success); }
         .zone.s4 { background: #06b6d4; }
         .zone.s3 { background: #f59e0b; }
@@ -340,11 +267,11 @@
 
         /* ===== SCORE DISPLAY ===== */
         .score-container {
-            margin: 2.5rem 0;
+            display: none;
         }
 
-        #score {
-            font-size: 2.5rem;
+        #current-score {
+            font-size: 2rem;
             font-weight: 800;
             color: var(--white);
             padding: 1.5rem 2.5rem;
@@ -354,30 +281,12 @@
             min-width: 280px;
             box-shadow: 0 10px 30px rgba(6, 182, 212, 0.3);
             letter-spacing: 0.5px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
         }
 
-        #score::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-            animation: shine 3s infinite;
-        }
-
-        @keyframes shine {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-
-        #score:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 40px rgba(6, 182, 212, 0.4);
+        #question-progress {
+            font-size: 1rem;
+            color: var(--text-light);
+            margin-top: 1rem;
         }
 
         /* ===== CONTROLS ===== */
@@ -387,6 +296,21 @@
             justify-content: center;
             gap: 1.2rem;
             flex-wrap: wrap;
+        }
+
+        #nextBtn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        #retryBtn,
+        #skipBtn,
+        #finishBtn {
+            display: none;
+        }
+
+        .zone {
+            display: none !important;
         }
 
         button {
@@ -415,10 +339,6 @@
             box-shadow: 0 8px 20px rgba(107, 114, 128, 0.3);
         }
 
-        #retryBtn:active {
-            transform: translateY(0);
-        }
-
         #skipBtn {
             background: linear-gradient(135deg, var(--warning) 0%, #f97316 100%);
             color: var(--white);
@@ -428,10 +348,6 @@
         #skipBtn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
-        }
-
-        #skipBtn:active {
-            transform: translateY(0);
         }
 
         #nextBtn {
@@ -445,8 +361,15 @@
             box-shadow: 0 8px 20px rgba(6, 182, 212, 0.3);
         }
 
-        #nextBtn:active {
-            transform: translateY(0);
+        #finishBtn {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            color: var(--white);
+            display: none;
+        }
+
+        #finishBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
         }
 
         .instruction {
@@ -472,117 +395,231 @@
             margin-top: 2rem;
         }
 
-        /* ===== QUESTION GRID ===== */
-        .chapter-section {
-            margin-bottom: 2rem;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            padding: 1.2rem;
-            border: 2px solid #e2e8f0;
-            transition: all 0.3s ease;
-        }
-
-        .chapter-section:hover {
-            border-color: var(--accent);
-            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.1);
-        }
-
-        .chapter-title {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            padding-bottom: 0.8rem;
-            border-bottom: 2px solid rgba(6, 182, 212, 0.2);
-        }
-
-        .chapter-title i {
-            font-size: 1rem;
-        }
-
-        .chapter-questions {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 0.6rem;
-        }
-
-        .grid-questions {
-            display: contents;
-        }
-
-        .q-item {
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            border: 2px solid #e2e8f0;
-            padding: 0.8rem 0.4rem;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            text-align: center;
-            color: var(--text-dark);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .q-item::before {
-            content: '';
-            position: absolute;
+        /* ===== RESULTS MODAL ===== */
+        .results-overlay {
+            display: none;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, transparent, rgba(6, 182, 212, 0.1), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.5s ease;
+            background: rgba(15, 23, 42, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease-out;
         }
 
-        .q-item:hover::before {
-            transform: translateX(100%);
+        .results-overlay.show {
+            display: flex;
         }
 
-        .q-item:hover {
-            background: linear-gradient(135deg, #e0f2fe 0%, #cffafe 100%);
-            border-color: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.15);
+        .results-card {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(15, 23, 42, 0.3);
+            animation: slideUp 0.5s ease-out;
         }
 
-        .q-item.active {
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .results-card h2 {
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .final-score {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin: 1.5rem 0;
+            letter-spacing: -1px;
+        }
+
+        .final-score.pass {
+            color: var(--success);
+            text-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .final-score.fail {
+            color: var(--danger);
+            text-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+        }
+
+        .result-status {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+
+        .result-status.pass {
+            color: var(--success);
+        }
+
+        .result-status.fail {
+            color: var(--danger);
+        }
+
+        .result-details {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: var(--bg-light);
+            border-radius: 8px;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        .result-details div {
+            margin: 0.8rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .result-details strong {
+            color: var(--accent);
+        }
+
+        .results-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            justify-content: center;
+        }
+
+        .results-actions button {
+            flex: 1;
+        }
+
+        #restartBtn {
             background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
             color: var(--white);
-            border-color: var(--accent-dark);
-            box-shadow: 0 6px 16px rgba(6, 182, 212, 0.3);
+        }
+
+        #restartBtn:hover {
             transform: translateY(-2px);
-            font-weight: 700;
         }
 
-        .q-item.answered {
-            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
-            color: var(--white);
-            border-color: #059669;
+        #exitBtn {
+            background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+            color: var(--text-dark);
         }
 
-        .q-item.skipped {
-            background: linear-gradient(135deg, var(--warning) 0%, #f97316 100%);
-            color: var(--white);
-            border-color: #f97316;
+        #exitBtn:hover {
+            transform: translateY(-2px);
         }
 
-        /* ===== FOOTER ===== */
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem 1.5rem;
+            }
+
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .header-info {
+                flex-direction: column;
+                gap: 1rem;
+                width: 100%;
+            }
+
+            .info-box {
+                width: 100%;
+                text-align: center;
+            }
+
+            .main-layout {
+                margin: 1rem auto;
+                gap: 1rem;
+                padding: 0 1rem;
+            }
+
+            .exam-area {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .video-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .video-controls {
+                width: 100%;
+                flex-direction: row;
+                min-width: auto;
+            }
+
+            #nextBtn {
+                width: auto;
+            }
+
+            video {
+                min-height: 250px;
+            }
+
+            #current-score {
+                font-size: 1.8rem;
+                padding: 1rem 1.5rem;
+                min-width: 200px;
+            }
+
+            .controls {
+                gap: 0.8rem;
+            }
+
+            button {
+                padding: 0.7rem 1.2rem;
+                font-size: 0.85rem;
+            }
+
+            .results-card {
+                padding: 2rem;
+                margin: 1rem;
+            }
+
+            .final-score {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .results-card {
+                padding: 1.5rem;
+            }
+
+            .final-score {
+                font-size: 2rem;
+            }
+        }
+         /* ===== FOOTER ===== */
         footer {
             background: linear-gradient(135deg, #0a0f1b 0%, var(--primary) 100%);
             color: var(--white);
             text-align: center;
             padding: 3rem 2rem;
-            margin-top: 4rem;
             animation: slideUp 0.6s ease-out;
-            box-shadow: 0 -8px 32px rgba(15, 23, 42, 0.1);
         }
 
         .footer-content {
@@ -617,130 +654,60 @@
             transform: translateY(-3px);
         }
 
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         footer p {
             margin: 0.5rem 0;
             opacity: 0.9;
             line-height: 1.6;
         }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 1024px) {
-            .main-layout {
-                flex-direction: column;
-            }
-
-            .question-list-area {
-                position: relative;
-                top: auto;
-                max-height: none;
-            }
-
-            .chapter-questions {
-                grid-template-columns: repeat(6, 1fr);
-            }
+        /* ===== FLOATING CONTACT ICONS ===== */
+        .floating-contact {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 999;
         }
 
-        @media (max-width: 768px) {
-            header {
-                padding: 1rem 1.5rem;
-            }
-
-            .header-container {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            marquee {
-                width: 100%;
-                font-size: 0.85rem;
-            }
-
-            .main-layout {
-                margin: 1rem auto;
-                gap: 1rem;
-                padding: 0 1rem;
-            }
-
-            .exam-area {
-                padding: 1.5rem;
-            }
-
-            .question-list-area {
-                padding: 1rem;
-            }
-
-            h1 {
-                font-size: 1.5rem;
-            }
-
-            h2 {
-                font-size: 1rem;
-            }
-
-            #score {
-                font-size: 1.8rem;
-                padding: 1rem 1.5rem;
-                min-width: 200px;
-            }
-
-            video {
-                min-height: 250px;
-            }
-
-            .controls {
-                gap: 0.8rem;
-            }
-
-            button {
-                padding: 0.7rem 1.2rem;
-                font-size: 0.85rem;
-            }
-
-            .chapter-questions {
-                grid-template-columns: repeat(4, 1fr);
-                gap: 0.6rem;
-            }
-
-            .floating-contact {
-                right: 1rem;
-                gap: 0.8rem;
-            }
-
-            .contact-btn {
-                width: 50px;
-                height: 50px;
-                font-size: 1.2rem;
-            }
+        .contact-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: var(--accent);
+            color: var(--white);
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 24px rgba(6, 182, 212, 0.3);
+            text-decoration: none;
         }
 
-        @media (max-width: 480px) {
-            .chapter-questions {
-                grid-template-columns: repeat(3, 1fr);
-            }
+        .contact-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 32px rgba(6, 182, 212, 0.4);
+            background: var(--accent-dark);
+        }
 
-            h1 {
-                font-size: 1.2rem;
-            }
+        .contact-btn.facebook {
+            background: #1877f2;
+        }
 
-            button {
-                padding: 0.6rem 1rem;
-                font-size: 0.8rem;
-            }
+        .contact-btn.facebook:hover {
+            background: #1567d4;
+        }
 
-            #score {
-                font-size: 1.5rem;
-            }
+        .contact-btn.zalo {
+            background: #0084ff;
+        }
+
+        .contact-btn.zalo:hover {
+            background: #0070d4;
         }
     </style>
 </head>
@@ -753,157 +720,99 @@
         <div class="logo">
             Đào Tạo Lái Xe <span>Đoàn Kết</span>
         </div>
-
-        <marquee behavior="scroll" direction="left">
-            🎬 Bài thi mô phỏng - Phát hiện tình huống nguy hiểm • Chế độ Ôn Tập 🎬
-        </marquee>
+        <div class="header-info">
+            <div class="info-box">
+                <i class="fas fa-question-circle"></i> <strong id="question-number">Câu 1/10</strong>
+            </div>
+            <div class="info-box">
+                <i class="fas fa-star"></i> <strong id="total-score">Điểm: 0/50</strong>
+            </div>
+        </div>
     </div>
 </header>
-
 <!-- ===== FLOATING CONTACT ICONS ===== -->
 <div class="floating-contact">
     <a href="https://zalo.me/0966618797" target="_blank" class="contact-btn zalo" title="Nhắn tin Zalo">
         <i class="fab fa-z"></i>
     </a>
-
     <a href="https://m.me/100087654321" target="_blank" class="contact-btn facebook" title="Nhắn tin Facebook">
         <i class="fab fa-facebook-f"></i>
     </a>
 </div>
-
 <!-- ===== MAIN CONTENT ===== -->
 <div class="main-layout">
     <!-- KHU VỰC THI -->
     <div class="exam-area" id="examArea">
-        <h1><i class="fas fa-play-circle"></i> BÀI THI MÔ PHỎNG</h1>
-        <p class="exam-subtitle">Chế độ Review - Phát hiện tình huống nguy hiểm</p>
+        <h1><i class="fas fa-play-circle"></i> BÀI THI MÔ PHỎNG - THI THỬ 10 CÂU</h1>
+        <p class="exam-subtitle">Phát hiện tình huống nguy hiểm - Chế độ thi thử ngẫu nhiên</p>
 
-        <video id="videoPlayer" muted autoplay playsinline></video>
+        <div class="video-container">
+            <div class="video-wrapper">
+                <video id="videoPlayer" muted autoplay playsinline></video>
+                <video id="preloadVideo" preload="auto" muted style="display:none"></video>
 
-        <div class="timeline-section">
-            <div class="timeline-label"><i class="fas fa-clock"></i> Tiến độ video</div>
-            <div id="timeline-wrapper">
-                <div id="timeline-progress"></div>
+                <div class="timeline-section">
+                    <div class="timeline-label"><i class="fas fa-clock"></i> Tiến độ video</div>
+                    <div id="timeline-wrapper">
+                        <div id="timeline-progress"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-controls">
+                <button id="retryBtn"><i class="fas fa-redo"></i> Làm lại</button>
+                <button id="skipBtn"><i class="fas fa-check"></i> Xem kết quả</button>
+                <button id="nextBtn"><i class="fas fa-arrow-right"></i> Câu tiếp theo</button>
+                <button id="finishBtn"><i class="fas fa-flag-checkered"></i> Kết thúc</button>
             </div>
         </div>
 
         <div class="score-container">
-            <div id="score"><i class="fas fa-star"></i> Điểm: -</div>
-        </div>
-
-        <div class="controls">
-            <button id="retryBtn"><i class="fas fa-redo"></i> Làm lại</button>
-            <button id="skipBtn"><i class="fas fa-check"></i> Xem kết quả</button>
-            <button id="nextBtn"><i class="fas fa-arrow-right"></i> Câu tiếp theo</button>
+            <div id="current-score"><i class="fas fa-star"></i> Điểm: -</div>
+            <div id="question-progress"></div>
         </div>
 
         <p class="instruction">
             <i class="fas fa-exclamation-circle"></i>
-            <strong>Nhấn phím Space</strong> hoặc nhấp vào nút khi phát hiện tình huống nguy hiểm
+            <strong>Nhấn phím Space</strong> hoặc nhấp vào nút "Xem kết quả" khi phát hiện tình huống nguy hiểm
         </p>
 
         <div id="footerMarker"></div>
     </div>
-
-    <!-- DANH SÁCH 120 CÂU -->
-    <div class="question-list-area">
-        <h2><i class="fas fa-list"></i> Danh sách 120 câu</h2>
-        <div id="gridQuestions" class="grid-questions">
-            <!-- Sẽ render bằng load_video.js -->
-        </div>
-    </div>
-
-    <script>
-        // Dữ liệu các chương
-        const chapters = [
-            {
-                title: 'Chương 1: Giao thông trong đô thị',
-                icon: 'fa-city',
-                startQuestion: 1,
-                endQuestion: 29
-            },
-            {
-                title: 'Chương 2: Giao thông ngoài đô thị',
-                icon: 'fa-tree',
-                startQuestion: 30,
-                endQuestion: 43
-            },
-            {
-                title: 'Chương 3: Giao thông trên cao tốc',
-                icon: 'fa-road',
-                startQuestion: 44,
-                endQuestion: 63
-            },
-            {
-                title: 'Chương 4: Giao thông trên đường núi',
-                icon: 'fa-mountain',
-                startQuestion: 64,
-                endQuestion: 73
-            },
-            {
-                title: 'Chương 5: Giao thông trên đường quốc lộ',
-                icon: 'fa-route',
-                startQuestion: 74,
-                endQuestion: 90
-            },
-            {
-                title: 'Chương 6: Tai nạn giao thông thực tế',
-                icon: 'fa-exclamation-triangle',
-                startQuestion: 91,
-                endQuestion: 120
-            }
-        ];
-
-        // Hàm khởi tạo danh sách câu hỏi theo chương
-        function initQuestionGrid() {
-            const gridContainer = document.getElementById('gridQuestions');
-            gridContainer.innerHTML = '';
-
-            chapters.forEach(chapter => {
-                // Tạo section chương
-                const chapterSection = document.createElement('div');
-                chapterSection.className = 'chapter-section';
-                
-                // Tạo tiêu đề chương
-                const chapterTitle = document.createElement('div');
-                chapterTitle.className = 'chapter-title';
-                chapterTitle.innerHTML = `<i class="fas ${chapter.icon}"></i> ${chapter.title}`;
-                
-                // Tạo grid câu hỏi trong chương
-                const chapterQuestions = document.createElement('div');
-                chapterQuestions.className = 'chapter-questions';
-                
-                // Thêm các nút câu hỏi
-                for (let i = chapter.startQuestion; i <= chapter.endQuestion; i++) {
-                    const btn = document.createElement('div');
-                    btn.className = 'q-item';
-                    btn.innerText = i;
-                    btn.id = 'q-btn-' + i;
-                    btn.onclick = () => jumpToQuestion(i);
-                    chapterQuestions.appendChild(btn);
-                }
-                
-                chapterSection.appendChild(chapterTitle);
-                chapterSection.appendChild(chapterQuestions);
-                gridContainer.appendChild(chapterSection);
-            });
-        }
-
-        // Hàm jumpToQuestion (giữ nguyên từ load_video.js)
-        function jumpToQuestion(questionNum) {
-            console.log('Nhảy đến câu:', questionNum);
-            // Thêm logic điều hướng ở đây nếu cần
-        }
-
-        // Khởi tạo grid khi trang tải
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initQuestionGrid);
-        } else {
-            initQuestionGrid();
-        }
-    </script>
 </div>
 
+<!-- ===== RESULTS MODAL ===== -->
+<div class="results-overlay" id="resultsOverlay">
+    <div class="results-card">
+        <h2><i class="fas fa-trophy"></i> KẾT QUẢ BÀI THI</h2>
+        
+        <div class="final-score" id="finalScore">0</div>
+        
+        <div class="result-status" id="resultStatus">
+            <i class="fas fa-times-circle"></i> Chưa đạt
+        </div>
+
+        <div class="result-details" id="resultDetails">
+            <div>
+                <span>Tổng điểm:</span>
+                <strong id="resultTotalScore">0/50</strong>
+            </div>
+            <div>
+                <span>Điểm cần đạt:</span>
+                <strong>35 điểm</strong>
+            </div>
+            <div>
+                <span>Trạng thái:</span>
+                <strong id="resultMessage">Cần ôn tập thêm</strong>
+            </div>
+        </div>
+
+        <div class="results-actions">
+            <button id="restartBtn"><i class="fas fa-redo"></i> Làm lại</button>
+            <button id="exitBtn"><i class="fas fa-home"></i> Trang chủ</button>
+        </div>
+    </div>
+</div>
 <!-- ===== FOOTER ===== -->
 <footer>
     <div class="footer-content">
@@ -932,11 +841,286 @@
         </p>
     </div>
 </footer>
+<script>
+    /* ================= BIẾN TOÀN CỤC ================= */
+    let randomQuestions = [];
+    let currentQuestionIndex = 0;
+    let scores = {}; // Lưu điểm từng câu
 
-<!-- Nạp dữ liệu trước -->
+    const video = document.getElementById("videoPlayer");
+    const progress = document.getElementById("timeline-progress");
+    const timeline = document.getElementById("timeline-wrapper");
+    const skipBtn = document.getElementById("skipBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const retryBtn = document.getElementById("retryBtn");
+    const finishBtn = document.getElementById("finishBtn");
+    const examArea = document.getElementById("examArea");
+    const footerMarker = document.getElementById("footerMarker");
+    const resultsOverlay = document.getElementById("resultsOverlay");
+
+    let flagPlaced = false;
+    let flagTime = null;
+    let isReviewed = false;
+    let currentQuestionNumber = 0;
+    
+    window.addEventListener("load", () => {
+            window.scrollTo({
+                top: 165,   // đổi số này theo ý bạn
+                behavior: "smooth"
+            });
+        });
+    /* ================= DỮ LIỆU TÌH HUỐNG ================= */
+    
+    /* ================= TÍNH ĐIỂM ================= */
+    function preloadNextQuestion() {
+        const nextIndex = currentQuestionIndex + 1;
+        if (nextIndex >= randomQuestions.length) return;
+
+        const nextQuestionNumber = randomQuestions[nextIndex];
+        const preloadVideo = document.getElementById("preloadVideo");
+
+        preloadVideo.src = `video_mo_phong/${nextQuestionNumber}.webm`;
+        preloadVideo.load();
+    }
+
+    function calculateScore(dangerousTimes, currentTimeMs) {
+        if (!dangerousTimes) return 0;
+        const t1 = parseFloat(dangerousTimes.time1) * 1000;
+        const t2 = parseFloat(dangerousTimes.time2) * 1000;
+        
+        if (currentTimeMs < t1 || currentTimeMs > t2) return 0;
+
+        const interval = (t2 - t1) / 5;
+        const diff = currentTimeMs - t1;
+
+        if (diff <= interval) return 5;
+        if (diff <= 2 * interval) return 4;
+        if (diff <= 3 * interval) return 3;
+        if (diff <= 4 * interval) return 2;
+        return 1;
+    }
+
+    /* ================= LOAD VIDEO ================= */
+    function loadVideo(questionNumber) {
+        
+        const videoPlayer = document.getElementById("videoPlayer");
+        videoPlayer.src = `video_mo_phong/${questionNumber}.webm`;
+        videoPlayer.currentTime = 0;
+        videoPlayer.load();
+    }
+
+    /* ================= RANDOM 10 CÂU ================= */
+    function getRandomQuestions() {
+        randomQuestions = [
+            Math.floor(Math.random() * (15 - 1 + 1)) + 1,
+            Math.floor(Math.random() * (29 - 16 + 1)) + 16,
+            Math.floor(Math.random() * (43 - 30 + 1)) + 30,
+            Math.floor(Math.random() * (54 - 44 + 1)) + 44,
+            Math.floor(Math.random() * (63 - 55 + 1)) + 55,
+            Math.floor(Math.random() * (73 - 64 + 1)) + 64,
+            Math.floor(Math.random() * (81 - 74 + 1)) + 74,
+            Math.floor(Math.random() * (90 - 82 + 1)) + 82,
+            Math.floor(Math.random() * (105 - 91 + 1)) + 91,
+            Math.floor(Math.random() * (120 - 106 + 1)) + 106
+        ];
+
+        // Khởi tạo điểm cho mỗi câu
+        randomQuestions.forEach(q => scores[q] = 0);
+
+        currentQuestionIndex = 0;
+        loadCurrentQuestion();
+    }
+
+    /* ================= LOAD CÂU HIỆN TẠI ================= */
+    function loadCurrentQuestion() {
+        if (currentQuestionIndex >= randomQuestions.length) {
+            showResults();
+            return;
+        }
+
+        currentQuestionNumber = randomQuestions[currentQuestionIndex];
+
+        document.getElementById("question-number").textContent =
+            `Câu ${currentQuestionIndex + 1}/10`;
+        document.getElementById("question-progress").textContent =
+            `Câu hỏi số: ${currentQuestionNumber}`;
+
+        resetUI();
+        loadVideo(currentQuestionNumber);
+
+        video.pause();
+        video.currentTime = 0;
+
+        setTimeout(() => {
+            video.play().catch(() => {});
+            preloadNextQuestion(); // 🔥 LOAD VIDEO TIẾP THEO Ở ĐÂY
+        }, 50);
+    }
+
+
+    /* ================= ĐIỀU KHIỂN VIDEO ================= */
+    video.addEventListener("timeupdate", () => {
+        if (!video.duration || isReviewed) return;
+        const percent = (video.currentTime / video.duration) * 100;
+        progress.style.width = percent + "%";
+    });
+
+    /* ================= HIỂN THỊ PHỔ ĐIỂM ================= */
+    function showReview() {
+        if (isReviewed || !video.duration) return;
+        isReviewed = true;
+        
+        video.pause();
+        progress.classList.add('review-mode');
+        progress.style.width = (video.currentTime / video.duration) * 100 + "%";
+
+        const qKey = currentQuestionNumber;
+
+        // Nếu chưa có điểm cho câu này, tính điểm mặc định
+        if (scores[qKey] === 0 && !flagPlaced) {
+            scores[qKey] = 0;
+            updateTotalScore();
+        }
+
+        nextBtn.style.display = "inline-flex";
+        if (currentQuestionIndex === randomQuestions.length - 1) {
+            finishBtn.style.display = "inline-flex";
+            nextBtn.style.display = "none";
+        }
+        
+        
+    }
+
+    /* ================= SỰ KIỆN ================= */
+    document.addEventListener("keydown", e => {
+        if (e.code !== "Space" || flagPlaced || video.paused || video.ended || isReviewed) return;
+        e.preventDefault(); 
+
+        flagPlaced = true;
+        flagTime = video.currentTime;
+
+        const percent = (flagTime / video.duration) * 100;
+        const flag = document.createElement("div");
+        flag.className = "flag";
+        
+        flag.style.left = percent + "%";
+        timeline.appendChild(flag);
+
+        const qKey = currentQuestionNumber;
+        
+        if (tinhhuong[qKey]) {
+            const score = calculateScore(tinhhuong[qKey], flagTime * 1000);
+            scores[qKey] = score;
+            updateTotalScore();
+        }
+
+        if (currentQuestionIndex === randomQuestions.length - 1) {
+            finishBtn.style.display = "inline-flex";
+            nextBtn.style.display = "none";
+        } else {
+            nextBtn.style.display = "inline-flex";
+        }
+
+        
+    });
+
+    skipBtn.onclick = showReview;
+    video.addEventListener("ended", () => {
+        showReview();
+
+        // ⏱ Sau 1.5s tự chuyển câu
+        setTimeout(() => {
+            if (currentQuestionIndex < randomQuestions.length - 1) {
+                currentQuestionIndex++;
+                loadCurrentQuestion();
+            } else {
+                showResults();
+            }
+        }, 1000);
+    });
+
+
+    retryBtn.onclick = () => {
+        loadCurrentQuestion();
+    };
+
+    nextBtn.onclick = () => {
+        if (currentQuestionIndex < randomQuestions.length - 1) {
+            currentQuestionIndex++;
+            loadCurrentQuestion();
+        }
+    };
+
+    finishBtn.onclick = () => {
+        showResults();
+    };
+
+    /* ================= TÍNH TỔNG ĐIỂM ================= */
+    function getTotalScore() {
+        return Object.values(scores).reduce((sum, score) => sum + score, 0);
+    }
+
+    function updateTotalScore() {
+        const total = getTotalScore();
+        document.getElementById("total-score").textContent = `Điểm: ${total}/50`;
+    }
+
+    /* ================= HIỂN THỊ KẾT QUẢ ================= */
+    function showResults() {
+        const totalScore = getTotalScore();
+        const passed = totalScore >= 35;
+
+        // Cập nhật UI kết quả
+        document.getElementById("finalScore").textContent = totalScore;
+        document.getElementById("finalScore").className = "final-score " + (passed ? "pass" : "fail");
+        
+        const resultStatus = document.getElementById("resultStatus");
+        resultStatus.className = "result-status " + (passed ? "pass" : "fail");
+        resultStatus.innerHTML = (passed ? '<i class="fas fa-check-circle"></i> ĐẠT' : '<i class="fas fa-times-circle"></i> CHƯA ĐẠT');
+        
+        document.getElementById("resultTotalScore").textContent = `${totalScore}/50`;
+        document.getElementById("resultMessage").textContent = passed ? "Chúc mừng bạn đạt được điểm" : "Bạn cần ôn tập thêm";
+
+        resultsOverlay.classList.add("show");
+    }
+
+    /* ================= RESET UI ================= */
+    function resetUI() {
+        flagPlaced = false;
+        flagTime = null;
+        isReviewed = false;
+        skipBtn.style.display = "none";
+        nextBtn.style.display = "none";
+        finishBtn.style.display = "none";
+        document.getElementById("current-score").innerText = "Điểm: -";
+        progress.style.width = "0%";
+        progress.classList.remove('review-mode');
+        const extras = timeline.querySelectorAll('.flag, .zone');
+        extras.forEach(el => el.remove());
+    }
+
+    /* ================= SỰ KIỆN NÚT RESULTS ================= */
+    document.getElementById("restartBtn").onclick = () => {
+        scores = {};
+        randomQuestions = [];
+        currentQuestionIndex = 0;
+        resultsOverlay.classList.remove("show");
+        getRandomQuestions();
+    };
+
+    document.getElementById("exitBtn").onclick = () => {
+        window.location.href = "/index4.html";
+    };
+
+    /* ================= KHỞI ĐỘNG ================= */
+    window.onload = () => {
+        getRandomQuestions();
+    };
+</script>
+
+
 <script src="data.js"></script>
-<!-- Nạp logic điều khiển sau cùng -->
-<script src="load_video.js"></script>
+
 
 </body>
 </html>
