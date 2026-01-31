@@ -709,6 +709,25 @@
         .contact-btn.zalo:hover {
             background: #0070d4;
         }
+        .tap-danger-btn {
+            
+            position: absolute;       /* BẮT BUỘC */
+            z-index: 10;  
+            display: block;
+            margin: -3.5rem auto 0.5rem auto;
+            
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(239,68,68,0.4);
+        }
     </style>
 </head>
 
@@ -750,6 +769,13 @@
             <div class="video-wrapper">
                 <video id="videoPlayer" muted autoplay playsinline></video>
                 <video id="preloadVideo" preload="auto" muted style="display:none"></video>
+                <button id="tapDangerBtn" class="tap-danger-btn">
+                    🚨 CHẠM KHI PHÁT HIỆN NGUY HIỂM
+                </button>
+                <p class="instruction">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <strong>Nhấn phím Space</strong> hoặc nhấp vào <strong>nút Đỏ</strong> khi phát hiện tình huống nguy hiểm
+                </p>
 
                 <div class="timeline-section">
                     <div class="timeline-label"><i class="fas fa-clock"></i> Tiến độ video</div>
@@ -772,10 +798,7 @@
             <div id="question-progress"></div>
         </div>
 
-        <p class="instruction">
-            <i class="fas fa-exclamation-circle"></i>
-            <strong>Nhấn phím Space</strong> hoặc nhấp vào nút "Xem kết quả" khi phát hiện tình huống nguy hiểm
-        </p>
+        
 
         <div id="footerMarker"></div>
     </div>
@@ -1023,7 +1046,12 @@
 
         
     });
-
+    document.getElementById("tapDangerBtn")
+        .addEventListener("click", () => {
+            document.dispatchEvent(
+                new KeyboardEvent("keydown", { code: "Space" })
+            );
+        });
     skipBtn.onclick = showReview;
     video.addEventListener("ended", () => {
         showReview();

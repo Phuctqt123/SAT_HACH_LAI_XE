@@ -135,6 +135,12 @@ document.addEventListener("keydown", e => {
     // 2. Sau khi ấn Space xong, tự động cuộn xuống dưới cùng để lộ điểm và các nút
     footerMarker.scrollIntoView({ behavior: 'smooth', block: 'end' });
 });
+document.getElementById("tapDangerBtn")
+    .addEventListener("click", () => {
+        document.dispatchEvent(
+            new KeyboardEvent("keydown", { code: "Space" })
+        );
+    });
 
 skipBtn.onclick = showReview;
 video.addEventListener("ended", showReview);
