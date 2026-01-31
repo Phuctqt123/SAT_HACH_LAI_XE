@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/logo_DK.ico" type="image/x-icon">
+    <title>Tra Cứu Thông Tin - Đào Tạo Lái Xe Đoàn Kết</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0f172a;
+            --primary-light: #1e293b;
+            --accent: #06b6d4;
+            --accent-dark: #0891b2;
+            --orange: #f97316;
+            --red: #ef4444;
+            --text-dark: #0f172a;
+            --text-light: #64748b;
+            --bg-light: #f8fafc;
+            --white: #ffffff;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--white);
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: var(--white);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .header-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .logo:hover {
+            color: var(--accent);
+        }
+
+        .logo span {
+            color: var(--accent);
+            font-weight: 800;
+            transition: all 0.3s ease;
+            margin-left: 0.5rem;
+        }
+
+        .logo span:hover {
+            text-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
+        }
+
+        marquee {
+            flex: 1;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--primary);
+            background: linear-gradient(135deg, #cffafe 0%, #e0f2fe 100%);
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+        }
+
+        /* ===== FLOATING CONTACT ICONS ===== */
+        .floating-contact {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 999;
+        }
+
+        .contact-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: var(--accent);
+            color: var(--white);
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 24px rgba(6, 182, 212, 0.3);
+            text-decoration: none;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 32px rgba(6, 182, 212, 0.4);
+            background: var(--accent-dark);
+        }
+
+        .contact-btn.facebook {
+            background: #1877f2;
+        }
+
+        .contact-btn.facebook:hover {
+            background: #1567d4;
+        }
+
+        .contact-btn.zalo {
+            background: #0084ff;
+        }
+
+        .contact-btn.zalo:hover {
+            background: #0070d4;
+        }
+
+        @media (max-width: 768px) {
+            .floating-contact {
+                right: 1rem;
+                top: auto;
+                bottom: 2rem;
+                flex-direction: row;
+            }
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        main {
+            min-height: calc(100vh - 200px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--bg-light) 0%, var(--white) 100%);
+        }
+
+        .inquiry-container {
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .inquiry-title {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-weight: 800;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .inquiry-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 3rem;
+            animation: fadeIn 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+            animation: fadeIn 0.8s ease-out 0.4s both;
+        }
+
+        .btn-search {
+            color: white;
+            padding: 1.2rem 2.5rem;
+            border-radius: 12px;
+            border: none;
+            font-weight: 800;
+            cursor: pointer;
+            font-size: 1.05rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            text-decoration: none;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-gplx {
+            background: linear-gradient(135deg, var(--orange) 0%, #ea580c 100%);
+        }
+
+        .btn-gplx:hover {
+            background: linear-gradient(135deg, #ea580c 0%, #d9460a 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(249, 115, 22, 0.3);
+        }
+
+        .btn-violation {
+            background: linear-gradient(135deg, var(--red) 0%, #dc2626 100%);
+        }
+
+        .btn-violation:hover {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(239, 68, 68, 0.3);
+        }
+
+        .support-section {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+            animation: fadeIn 0.8s ease-out 0.6s both;
+        }
+
+        .support-text {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            margin: 0.8rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+
+        .support-text i {
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        .support-title {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: linear-gradient(135deg, #0a0f1b 0%, var(--primary) 100%);
+            color: var(--white);
+            text-align: center;
+            padding: 3rem 2rem;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-icons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+
+        .footer-icons a {
+            color: var(--white);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        .footer-icons a:hover {
+            color: var(--accent);
+            background: rgba(6, 182, 212, 0.2);
+            transform: translateY(-3px);
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .inquiry-title {
+                font-size: 1.8rem;
+            }
+
+            .inquiry-subtitle {
+                font-size: 0.95rem;
+            }
+
+            .btn-group {
+                gap: 1rem;
+                flex-direction: column;
+            }
+
+            .btn-search {
+                width: 100%;
+                padding: 1rem 2rem;
+                font-size: 0.95rem;
+            }
+
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            marquee {
+                width: 100%;
+                font-size: 0.85rem;
+            }
+
+            .support-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <div class="logo">
+            Đào Tạo Lái Xe <span>Đoàn Kết</span>
+        </div>
+
+        <marquee behavior="scroll" direction="left">
+            🚗 Xin chào bạn, đây là trang tra cứu thông tin cực kỳ chính xác
+        </marquee>
+    </div>
+</header>
+
+<!-- ===== FLOATING CONTACT ICONS ===== -->
+<div class="floating-contact">
+    <a href="https://zalo.me/0966618797" target="_blank" class="contact-btn zalo" title="Nhắn tin Zalo">
+        <i class="fab fa-z"></i>
+    </a>
+
+    <a href="https://m.me/100087654321" target="_blank" class="contact-btn facebook" title="Nhắn tin Facebook">
+        <i class="fab fa-facebook-f"></i>
+    </a>
+</div>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main>
+    <div class="inquiry-container">
+        <h1 class="inquiry-title">Tra Cứu Thông Tin</h1>
+        <p class="inquiry-subtitle">Chọn loại tra cứu bạn cần để được chuyển đến hệ thống chính thức</p>
+
+        <div class="btn-group">
+            <!-- Tra cứu GPLX -->
+            <button class="btn-search btn-gplx"
+                onclick="openSecureBox('https://gplx.csgt.bocongan.gov.vn/?page=home','TraCuuGPLX')">
+                <i class="fas fa-id-card"></i> Tra cứu GPLX
+            </button>
+
+            <!-- Tra cứu phương tiện vi phạm -->
+            <button class="btn-search btn-violation"
+                onclick="openSecureBox('https://www.csgt.vn/tra-cuu-phuong-tien-vi-pham.html','TraCuuViPham')">
+                <i class="fas fa-car-crash"></i> Tra cứu vi phạm
+            </button>
+        </div>
+
+        <div class="support-section">
+            <div class="support-title"><i class="fas fa-info-circle"></i> Thông tin hỗ trợ</div>
+            <p class="support-text">
+                <i class="fas fa-shield-alt"></i> Hệ thống sẽ mở trang tra cứu chính thức từ Bộ Công An
+            </p>
+            <p class="support-text">
+                <i class="fas fa-lock"></i> Thông tin tra cứu hoàn toàn chính xác và bảo mật
+            </p>
+        </div>
+    </div>
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+    <div class="footer-content">
+        <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Đào Tạo Lái Xe <span style="color: var(--accent);">Đoàn Kết</span></h2>
+        
+        <p><strong>Địa chỉ:</strong> [Thêm địa chỉ của bạn]</p>
+        <p><strong>Điện thoại:</strong> 0966 618 797</p>
+        <p><strong>Email:</strong> [Thêm email của bạn]</p>
+
+        <div class="footer-icons">
+            <a href="https://zalo.me/0966618797" target="_blank" title="Zalo">
+                <i class="fab fa-z"></i>
+            </a>
+            <a href="https://m.me/100087654321" target="_blank" title="Facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </div>
+
+        <p style="margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 1rem;">
+            © 2024 Đào Tạo Lái Xe Đoàn Kết. Bảo lưu mọi quyền.
+        </p>
+    </div>
+</footer>
+
+<script>
+    function openSecureBox(url, title) {
+        const width = 1100;
+        const height = 850;
+
+        const left = (window.screen.width - width) / 2;
+        const top = (window.screen.height - height) / 2;
+
+        const features = `
+            width=${width},
+            height=${height},
+            top=${top},
+            left=${left},
+            menubar=no,
+            toolbar=no,
+            location=yes,
+            status=no,
+            resizable=yes,
+            scrollbars=yes
+        `;
+
+        const popup = window.open(url, title, features);
+
+        if (!popup || popup.closed || typeof popup.focus === 'undefined') {
+            alert('⚠️ Trình duyệt đang chặn popup.\nVui lòng cho phép mở cửa sổ bật lên để sử dụng chức năng tra cứu.');
+        } else {
+            popup.focus();
+        }
+    }
+</script>
+
+</body>
+</html>

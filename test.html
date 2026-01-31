@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tra Cứu Thông Tin - Đào Tạo Lái Xe Đoàn Kết</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #0f172a;
+            --orange: #f97316;
+            --accent: #06b6d4;
+            --red: #ef4444;
+        }
+
+        body {
+            font-family: -apple-system, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+            background: #f8fafc;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn-search {
+            color: white;
+            padding: 16px 32px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 800;
+            cursor: pointer;
+            font-size: 1.05rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .btn-gplx {
+            background: var(--orange);
+        }
+
+        .btn-gplx:hover {
+            background: #ea580c;
+            transform: translateY(-3px);
+        }
+
+        .btn-violation {
+            background: var(--red);
+        }
+
+        .btn-violation:hover {
+            background: #dc2626;
+            transform: translateY(-3px);
+        }
+
+        .support-text {
+            margin-top: 25px;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .support-text i {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="btn-group">
+        <!-- Tra cứu GPLX -->
+        <button class="btn-search btn-gplx"
+            onclick="openSecureBox('https://gplx.csgt.bocongan.gov.vn/?page=home','TraCuuGPLX')">
+            <i class="fas fa-id-card"></i> Tra cứu GPLX
+        </button>
+
+        <!-- Tra cứu phương tiện vi phạm -->
+        <button class="btn-search btn-violation"
+            onclick="openSecureBox('https://www.csgt.vn/tra-cuu-phuong-tien-vi-pham.html','TraCuuViPham')">
+            <i class="fas fa-car-crash"></i> Tra cứu vi phạm
+        </button>
+    </div>
+
+    <div class="support-text">
+        <p><i class="fas fa-shield-alt"></i> Hệ thống sẽ mở trang tra cứu chính thức từ Bộ Công An.</p>
+        <p><i>Vui lòng nhập đúng thông tin và mã bảo vệ để có kết quả chính xác.</i></p>
+    </div>
+
+<script>
+    function openSecureBox(url, title) {
+        const width = 1100;
+        const height = 850;
+
+        const left = (window.screen.width - width) / 2;
+        const top = (window.screen.height - height) / 2;
+
+        const features = `
+            width=${width},
+            height=${height},
+            top=${top},
+            left=${left},
+            menubar=no,
+            toolbar=no,
+            location=yes,
+            status=no,
+            resizable=yes,
+            scrollbars=yes
+        `;
+
+        const popup = window.open(url, title, features);
+
+        if (!popup || popup.closed || typeof popup.focus === 'undefined') {
+            alert('⚠️ Trình duyệt đang chặn popup.\nVui lòng cho phép mở cửa sổ bật lên để sử dụng chức năng tra cứu.');
+        } else {
+            popup.focus();
+        }
+    }
+</script>
+
+</body>
+</html>
