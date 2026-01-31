@@ -749,7 +749,7 @@
             display: block;
             margin: -6rem auto 0.5rem auto;
 
-            padding: 1rem 1.5rem;
+            padding: 1rem 1rem;
             font-size: 1rem;
             font-weight: 700;
 
@@ -761,7 +761,11 @@
             cursor: pointer;
             box-shadow: 0 10px 30px rgba(239,68,68,0.4);
         }
-
+        @media (max-width: 1024px) {
+            video {
+                pointer-events: auto;
+            }
+        }
 
     </style>
 </head>
