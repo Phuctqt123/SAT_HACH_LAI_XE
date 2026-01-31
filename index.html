@@ -708,6 +708,26 @@
             font-size: 16px;
             margin-left: -45px;
         }
+        .btn-gplx {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            color: #fff;
+        }
+
+        .btn-gplx:hover {
+            background: linear-gradient(135deg, #ea580c, #d9460a);
+            transform: translateY(-2px);
+        }
+
+        .btn-violation {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #fff;
+        }
+
+        .btn-violation:hover {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            transform: translateY(-2px);
+        }
+
     </style>
 </head>
 <body>
@@ -754,9 +774,18 @@
                 <i class="fas fa-pen-to-square"></i> Thi thử miễn phí
             </a>
 
-            <a href="Tracuu/" class="btn btn-accent-2" target="_blank" rel="noopener noreferrer">
-                <i class="fas fa-magnifying-glass"></i> Tra Cứu Thông Tin
+            <a href="javascript:void(0)"
+            class="btn btn-gplx"
+            onclick="openSecureBox('https://gplx.csgt.bocongan.gov.vn/?page=home','TraCuuGPLX')">
+                <i class="fas fa-id-card"></i> Tra cứu GPLX
             </a>
+
+            <a href="javascript:void(0)"
+            class="btn btn-violation"
+            onclick="openSecureBox('https://www.csgt.vn/tra-cuu-phuong-tien-vi-pham.html','TraCuuViPham')">
+                <i class="fas fa-car-crash"></i> Tra phạt nguội
+            </a>
+
 
         </div>
     </div>
@@ -964,6 +993,34 @@
         video.addEventListener('loadedmetadata', function () {
             video.play();
         });
+    }
+    function openSecureBox(url, title) {
+        const width = 1100;
+        const height = 850;
+
+        const left = (window.screen.width - width) / 2;
+        const top = (window.screen.height - height) / 2;
+
+        const features = `
+            width=${width},
+            height=${height},
+            top=${top},
+            left=${left},
+            menubar=no,
+            toolbar=no,
+            location=yes,
+            status=no,
+            resizable=yes,
+            scrollbars=yes
+        `;
+
+        const popup = window.open(url, title, features);
+
+        if (!popup || popup.closed || typeof popup.focus === 'undefined') {
+            alert('⚠️ Trình duyệt đang chặn popup.\nVui lòng cho phép để tra cứu.');
+        } else {
+            popup.focus();
+        }
     }
 </script>
 
