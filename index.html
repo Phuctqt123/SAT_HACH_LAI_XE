@@ -728,6 +728,109 @@
             transform: translateY(-2px);
         }
 
+        /* ================================================
+   SAFARI iOS OPTIMIZATIONS (thêm vào cuối <style>)
+   Chỉ áp dụng khi cần, tương thích tốt 2026
+   ================================================ */
+
+/* 1. Đảm bảo meta viewport có viewport-fit=cover (bạn nên thêm vào <head> nếu chưa có) 
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"> 
+*/
+
+/* 2. Biến env cho safe-area (notch, home bar, dynamic toolbar) */
+:root {
+    --sat: env(safe-area-inset-top, 0px);
+    --sab: env(safe-area-inset-bottom, 0px);
+    --sar: env(safe-area-inset-right, 0px);
+    --sal: env(safe-area-inset-left, 0px);
+}
+
+/* 3. Fix 100vh / full-height trên iOS (dùng dvh + fallback) 
+   100dvh = dynamic viewport height, tự điều chỉnh khi thanh địa chỉ thu gọn/mở rộng
+*/
+.hero {
+    height: 100vh;                          /* fallback cho browser cũ */
+    height: 100dvh;                         /* ưu tiên cho iOS Safari mới + Chrome */
+    min-height: -webkit-fill-available;     /* fix cũ nhưng vẫn hữu ích cho một số trường hợp */
+    padding-top: var(--sat);
+    padding-bottom: var(--sab);
+    box-sizing: border-box;
+}
+
+/* Nếu bạn muốn hero cover full screen kể cả dưới thanh địa chỉ (background kéo dài) */
+.hero::before {  /* hoặc dùng video background nếu cần */
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: inherit;  /* hoặc gradient/video */
+    z-index: -1;
+}
+
+/* 4. Floating contact buttons – di chuyển xuống bottom + tôn trọng home bar */
+.floating-contact {
+    top: auto;
+    bottom: calc(2rem + var(--sab));       /* cách home indicator một khoảng an toàn */
+    right: calc(1rem + var(--sar));
+    transform: none;
+    flex-direction: row;                    /* hoặc column nếu muốn dọc */
+    gap: 1rem;
+    padding-bottom: var(--sab);             /* phòng trường hợp overlap */
+}
+
+@media (max-width: 768px) {
+    .floating-contact {
+        bottom: calc(1.5rem + var(--sab));
+        right: calc(0.8rem + var(--sar));
+        left: calc(0.8rem + var(--sal));
+        justify-content: center;
+    }
+}
+
+/* 5. Fix scroll mượt + tap highlight (Safari iOS hay giật nếu thiếu) */
+html {
+    -webkit-text-size-adjust: 100%;         /* ngăn tự zoom chữ */
+    height: 100dvh;                         /* hoặc 100% nếu body fixed */
+}
+
+body {
+    min-height: 100dvh;
+    -webkit-tap-highlight-color: transparent; /* loại bỏ highlight xanh khi tap */
+    overscroll-behavior: contain;           /* mượt hơn khi scroll đến edge */
+}
+
+/* 6. Fix cho fixed/sticky elements (nếu có header sticky hoặc floating) */
+header {
+    padding-top: var(--sat);                /* tránh bị notch đè */
+}
+
+/* 7. Map iframe & full-width sections – tránh bị cắt bottom */
+.map-container,
+.map-iframe {
+    height: calc(500px + var(--sab));       /* thêm buffer nếu cần */
+    margin-bottom: var(--sab);
+}
+
+/* 8. Fallback cho browser không hỗ trợ dvh (rất hiếm 2026) */
+@supports not (height: 100dvh) {
+    .hero {
+        height: 100vh;
+        min-height: -webkit-fill-available;
+    }
+}
+
+/* 9. Optional: JS động --vh nếu dvh chưa ổn định 100% (thêm vào <script> cuối body) 
+   function setVH() {
+       document.documentElement.style.setProperty('--real-vh', `${window.innerHeight}px`);
+   }
+   setVH();
+   window.addEventListener('resize', setVH);
+   window.addEventListener('orientationchange', setVH);
+   
+   Sau đó dùng: height: var(--real-vh, 100vh);
+*/
+
+/* Kết thúc phần fix Safari iOS */
+
     </style>
 </head>
 <body>
