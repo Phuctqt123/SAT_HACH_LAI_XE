@@ -729,131 +729,88 @@
         }
 
 /* ================================================
-   Chỉ kéo dài hero ban đầu trên iOS Safari (over-extend để phủ address bar)
-   Thêm vào CUỐI <style> của bạn
+   Fix black bars (phần đen trên/dưới) video background trên Safari iOS
+   - Phủ full màn hình, loại bỏ letterbox/black padding
+   - Kết hợp với over-extend để phủ address bar
    ================================================ */
 
-/* Biến safe-area (đã có từ trước, giữ nguyên) */
-:root {
-    --sat: env(safe-area-inset-top, 0px);
-    --sab: env(safe-area-inset-bottom, 0px);
-}
-
-/* Chỉ target iOS Safari (dùng @supports với -webkit-touch-callout) */
-@supports (-webkit-touch-callout: none) {
-    /* Hero kéo dài hơn để phủ kín address bar khi mới load */
-    .hero {
-        /* 
-           - 100lvh: large viewport height (khi bar ẩn) 
-           - + 60px đến 100px: buffer để over-extend khi bar visible (thử nghiệm 60-80px thường đủ cho iPhone 15/16 series)
-           - Hoặc dùng 100svh + buffer nếu muốn conservative hơn
-        */
-        min-height: calc(100lvh + 80px);   /* Trick phổ biến 2026: làm quá cao → background phủ kín bar */
-        height: calc(100lvh + 80px);       /* Force height lớn hơn */
-        
-        /* Hoặc variant an toàn hơn nếu bạn sợ jank: */
-        /* min-height: calc(100svh + 60px); */
-        
-        padding-top: var(--sat);           /* Tránh notch đè nội dung */
-        padding-bottom: calc(var(--sab) + 40px); /* Buffer dưới */
-        box-sizing: border-box;
-    }
-    
-    /* Đảm bảo video/background kéo theo full (không bị cắt) */
-    .hero video,
-    .hero::before {  /* Nếu bạn có overlay hoặc pseudo cho bg */
-        height: 100%;  /* Kéo theo height cha (đã over) */
-        object-fit: cover;
-    }
-    
-    /* Nội dung text/CTA đẩy lên để không bị đẩy xuống quá thấp */
-    .hero-content {
-        padding-top: var(--sat);
-        padding-bottom: var(--sab);
-        justify-content: center;  /* Giữ center nếu cần */
-    }
-}
-
-/* Fallback cho non-iOS hoặc browser hỗ trợ dvh tốt */
-.hero {
-    height: 100dvh;                    /* Default cho Chrome/Android */
-    min-height: -webkit-fill-available; /* Cũ nhưng vẫn hữu ích fallback */
-}
-
-/* Optional: Nếu vẫn thấy jank nhỏ khi scroll, thêm overscroll cho body */
-body {
-    overscroll-behavior-y: none;       /* Giảm bounce/jank trên iOS */
-}
-/* ================================================
-   Tối ưu Hero full-screen phủ address bar Safari iOS (2026 ready)
-   Chỉ target iOS Safari + fallback tốt
-   ================================================ */
-
-/* Giữ biến safe-area */
-:root {
-    --sat: env(safe-area-inset-top, 0px);
-    --sab: env(safe-area-inset-bottom, 0px);
-}
-
-/* Chỉ áp dụng cho iOS Safari */
-@supports (-webkit-touch-callout: none) {
-    .hero {
-        /* 
-           - 100lvh: khi address bar ẩn (full màn hình)
-           - + buffer 70-90px: đủ phủ bar khi mới load (thử 80px trung bình cho iPhone 14–16 series)
-           - Dùng min-height để tránh overflow cứng
-        */
-        min-height: calc(100lvh + 80px);
-        height: auto;                       /* Không force height cứng, cho nội dung tự điều chỉnh */
-        padding-top: var(--sat);
-        padding-bottom: calc(var(--sab) + 50px); /* Buffer dưới lớn hơn tí để CTA không sát home bar */
-        box-sizing: border-box;
-        position: relative;
-        overflow: hidden;
-    }
-
-    /* Video phải kéo full theo min-height cha */
-    .hero video {
-        height: 100%;
-        min-height: calc(100lvh + 80px);   /* Đồng bộ với cha */
-        object-fit: cover;
-        top: 0;
-        left: 0;
-    }
-
-    /* Overlay cũng full */
-    .hero-overlay {
-        height: 100%;
-        min-height: calc(100lvh + 80px);
-    }
-
-    /* Nội dung center nhưng không bị đẩy quá thấp */
-    .hero-content {
-        min-height: calc(100lvh + 80px);
-        padding-top: var(--sat);
-        padding-bottom: var(--sab);
-        justify-content: center;
-        align-items: center;
-    }
-}
-
-/* Fallback cho Android/Chrome/other Safari */
-.hero {
-    height: 100dvh;                        /* Dynamic – tự điều chỉnh khi bar ẩn/hiện */
-    min-height: -webkit-fill-available;    /* Fix cũ nhưng vẫn hữu ích */
-}
-
-/* Giảm jank scroll bounce trên iOS */
+/* Đảm bảo body/html không lộ đen */
 html, body {
-    overscroll-behavior-y: none;
+    margin: 0;
+    padding: 0;
     height: 100dvh;
+    background: var(--primary);  /* fallback khớp gradient hero của bạn */
+    overscroll-behavior-y: none; /* giảm bounce/jank trên iOS */
 }
 
-/* Nếu vẫn thấy khoảng trắng thừa khi scroll lên, thêm này (tùy chọn) */
-@supports (height: 100dvh) {
+/* Hero full dynamic viewport */
+.hero {
+    position: relative;
+    width: 100%;
+    height: 100dvh;                    /* dynamic vh - tự điều chỉnh khi bar ẩn/hiện */
+    min-height: -webkit-fill-available; /* fallback cũ cho Safari */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary);        /* fallback nếu video load chậm hoặc lỗi */
+}
+
+/* Video: force full cover, loại black bars */
+.hero video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover !important;      /* crop để fill full, không letterbox */
+    object-position: center;           /* crop đều từ giữa */
+    z-index: 0;
+    pointer-events: none;
+    background: transparent;           /* tránh fallback đen nếu video delay */
+}
+
+/* Overlay full để che nếu có khoảng trống */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.55);
+    z-index: 1;
+}
+
+/* Chỉ target Safari iOS: over-extend + fix black bars thêm */
+@supports (-webkit-touch-callout: none) {
     .hero {
-        height: 100dvh;
+        min-height: calc(100lvh + 80px);   /* buffer 80px để phủ address bar + safe-area */
+        height: auto;                      /* cho phép tự điều chỉnh, tránh jank */
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: calc(env(safe-area-inset-bottom) + 40px);
     }
+
+    .hero video {
+        min-height: calc(100lvh + 80px);   /* đồng bộ với hero để stretch full */
+    }
+
+    .hero-overlay {
+        min-height: calc(100lvh + 80px);
+    }
+}
+
+/* Nội dung giữ center, không bị đẩy */
+.hero-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
 }
 
 
