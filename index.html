@@ -728,108 +728,134 @@
             transform: translateY(-2px);
         }
 
-        /* ================================================
-   SAFARI iOS OPTIMIZATIONS (thêm vào cuối <style>)
-   Chỉ áp dụng khi cần, tương thích tốt 2026
+/* ================================================
+   Chỉ kéo dài hero ban đầu trên iOS Safari (over-extend để phủ address bar)
+   Thêm vào CUỐI <style> của bạn
    ================================================ */
 
-/* 1. Đảm bảo meta viewport có viewport-fit=cover (bạn nên thêm vào <head> nếu chưa có) 
-   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"> 
-*/
-
-/* 2. Biến env cho safe-area (notch, home bar, dynamic toolbar) */
+/* Biến safe-area (đã có từ trước, giữ nguyên) */
 :root {
     --sat: env(safe-area-inset-top, 0px);
     --sab: env(safe-area-inset-bottom, 0px);
-    --sar: env(safe-area-inset-right, 0px);
-    --sal: env(safe-area-inset-left, 0px);
 }
 
-/* 3. Fix 100vh / full-height trên iOS (dùng dvh + fallback) 
-   100dvh = dynamic viewport height, tự điều chỉnh khi thanh địa chỉ thu gọn/mở rộng
-*/
-.hero {
-    height: 100vh;                          /* fallback cho browser cũ */
-    height: 100dvh;                         /* ưu tiên cho iOS Safari mới + Chrome */
-    min-height: -webkit-fill-available;     /* fix cũ nhưng vẫn hữu ích cho một số trường hợp */
-    padding-top: var(--sat);
-    padding-bottom: var(--sab);
-    box-sizing: border-box;
-}
-
-/* Nếu bạn muốn hero cover full screen kể cả dưới thanh địa chỉ (background kéo dài) */
-.hero::before {  /* hoặc dùng video background nếu cần */
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: inherit;  /* hoặc gradient/video */
-    z-index: -1;
-}
-
-/* 4. Floating contact buttons – di chuyển xuống bottom + tôn trọng home bar */
-.floating-contact {
-    top: auto;
-    bottom: calc(2rem + var(--sab));       /* cách home indicator một khoảng an toàn */
-    right: calc(1rem + var(--sar));
-    transform: none;
-    flex-direction: row;                    /* hoặc column nếu muốn dọc */
-    gap: 1rem;
-    padding-bottom: var(--sab);             /* phòng trường hợp overlap */
-}
-
-@media (max-width: 768px) {
-    .floating-contact {
-        bottom: calc(1.5rem + var(--sab));
-        right: calc(0.8rem + var(--sar));
-        left: calc(0.8rem + var(--sal));
-        justify-content: center;
-    }
-}
-
-/* 5. Fix scroll mượt + tap highlight (Safari iOS hay giật nếu thiếu) */
-html {
-    -webkit-text-size-adjust: 100%;         /* ngăn tự zoom chữ */
-    height: 100dvh;                         /* hoặc 100% nếu body fixed */
-}
-
-body {
-    min-height: 100dvh;
-    -webkit-tap-highlight-color: transparent; /* loại bỏ highlight xanh khi tap */
-    overscroll-behavior: contain;           /* mượt hơn khi scroll đến edge */
-}
-
-/* 6. Fix cho fixed/sticky elements (nếu có header sticky hoặc floating) */
-header {
-    padding-top: var(--sat);                /* tránh bị notch đè */
-}
-
-/* 7. Map iframe & full-width sections – tránh bị cắt bottom */
-.map-container,
-.map-iframe {
-    height: calc(500px + var(--sab));       /* thêm buffer nếu cần */
-    margin-bottom: var(--sab);
-}
-
-/* 8. Fallback cho browser không hỗ trợ dvh (rất hiếm 2026) */
-@supports not (height: 100dvh) {
+/* Chỉ target iOS Safari (dùng @supports với -webkit-touch-callout) */
+@supports (-webkit-touch-callout: none) {
+    /* Hero kéo dài hơn để phủ kín address bar khi mới load */
     .hero {
-        height: 100vh;
-        min-height: -webkit-fill-available;
+        /* 
+           - 100lvh: large viewport height (khi bar ẩn) 
+           - + 60px đến 100px: buffer để over-extend khi bar visible (thử nghiệm 60-80px thường đủ cho iPhone 15/16 series)
+           - Hoặc dùng 100svh + buffer nếu muốn conservative hơn
+        */
+        min-height: calc(100lvh + 80px);   /* Trick phổ biến 2026: làm quá cao → background phủ kín bar */
+        height: calc(100lvh + 80px);       /* Force height lớn hơn */
+        
+        /* Hoặc variant an toàn hơn nếu bạn sợ jank: */
+        /* min-height: calc(100svh + 60px); */
+        
+        padding-top: var(--sat);           /* Tránh notch đè nội dung */
+        padding-bottom: calc(var(--sab) + 40px); /* Buffer dưới */
+        box-sizing: border-box;
+    }
+    
+    /* Đảm bảo video/background kéo theo full (không bị cắt) */
+    .hero video,
+    .hero::before {  /* Nếu bạn có overlay hoặc pseudo cho bg */
+        height: 100%;  /* Kéo theo height cha (đã over) */
+        object-fit: cover;
+    }
+    
+    /* Nội dung text/CTA đẩy lên để không bị đẩy xuống quá thấp */
+    .hero-content {
+        padding-top: var(--sat);
+        padding-bottom: var(--sab);
+        justify-content: center;  /* Giữ center nếu cần */
     }
 }
 
-/* 9. Optional: JS động --vh nếu dvh chưa ổn định 100% (thêm vào <script> cuối body) 
-   function setVH() {
-       document.documentElement.style.setProperty('--real-vh', `${window.innerHeight}px`);
-   }
-   setVH();
-   window.addEventListener('resize', setVH);
-   window.addEventListener('orientationchange', setVH);
-   
-   Sau đó dùng: height: var(--real-vh, 100vh);
-*/
+/* Fallback cho non-iOS hoặc browser hỗ trợ dvh tốt */
+.hero {
+    height: 100dvh;                    /* Default cho Chrome/Android */
+    min-height: -webkit-fill-available; /* Cũ nhưng vẫn hữu ích fallback */
+}
 
-/* Kết thúc phần fix Safari iOS */
+/* Optional: Nếu vẫn thấy jank nhỏ khi scroll, thêm overscroll cho body */
+body {
+    overscroll-behavior-y: none;       /* Giảm bounce/jank trên iOS */
+}
+/* ================================================
+   Tối ưu Hero full-screen phủ address bar Safari iOS (2026 ready)
+   Chỉ target iOS Safari + fallback tốt
+   ================================================ */
+
+/* Giữ biến safe-area */
+:root {
+    --sat: env(safe-area-inset-top, 0px);
+    --sab: env(safe-area-inset-bottom, 0px);
+}
+
+/* Chỉ áp dụng cho iOS Safari */
+@supports (-webkit-touch-callout: none) {
+    .hero {
+        /* 
+           - 100lvh: khi address bar ẩn (full màn hình)
+           - + buffer 70-90px: đủ phủ bar khi mới load (thử 80px trung bình cho iPhone 14–16 series)
+           - Dùng min-height để tránh overflow cứng
+        */
+        min-height: calc(100lvh + 80px);
+        height: auto;                       /* Không force height cứng, cho nội dung tự điều chỉnh */
+        padding-top: var(--sat);
+        padding-bottom: calc(var(--sab) + 50px); /* Buffer dưới lớn hơn tí để CTA không sát home bar */
+        box-sizing: border-box;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Video phải kéo full theo min-height cha */
+    .hero video {
+        height: 100%;
+        min-height: calc(100lvh + 80px);   /* Đồng bộ với cha */
+        object-fit: cover;
+        top: 0;
+        left: 0;
+    }
+
+    /* Overlay cũng full */
+    .hero-overlay {
+        height: 100%;
+        min-height: calc(100lvh + 80px);
+    }
+
+    /* Nội dung center nhưng không bị đẩy quá thấp */
+    .hero-content {
+        min-height: calc(100lvh + 80px);
+        padding-top: var(--sat);
+        padding-bottom: var(--sab);
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+/* Fallback cho Android/Chrome/other Safari */
+.hero {
+    height: 100dvh;                        /* Dynamic – tự điều chỉnh khi bar ẩn/hiện */
+    min-height: -webkit-fill-available;    /* Fix cũ nhưng vẫn hữu ích */
+}
+
+/* Giảm jank scroll bounce trên iOS */
+html, body {
+    overscroll-behavior-y: none;
+    height: 100dvh;
+}
+
+/* Nếu vẫn thấy khoảng trắng thừa khi scroll lên, thêm này (tùy chọn) */
+@supports (height: 100dvh) {
+    .hero {
+        height: 100dvh;
+    }
+}
+
 
     </style>
 </head>
