@@ -812,6 +812,39 @@ html, body {
     text-align: center;
     padding: 0 20px;
 }
+/* Đẩy nội dung xuống dưới hero để không bị che */
+.hero {
+    height: 100dvh;  /* giữ nguyên */
+    min-height: 100vh;  /* fallback */
+}
+
+/* Thêm margin-bottom lớn cho hero để tạo khoảng trống */
+.hero + section, 
+.hero + div.map-container {
+    margin-top: -100px;  /* hoặc giá trị âm nhỏ nếu muốn overlap nhẹ hero */
+    /* Hoặc margin-top: 0; và dùng padding-top trên section đầu tiên */
+}
+
+/* Tốt nhất: Làm hero không chiếm full height nếu có nhiều section */
+@media (min-width: 768px) {
+    .hero {
+        height: 80vh;  /* hoặc 90vh, giảm xuống để thấy nội dung dưới ngay */
+    }
+}
+
+/* Đảm bảo body có scroll bình thường */
+body {
+    overflow-x: hidden;
+    min-height: 100dvh;
+}
+
+/* Fix text bị che nếu overlay lan ra (hiếm) */
+.seo-keywords {
+    position: relative;
+    z-index: 10;  /* đẩy lên nếu cần */
+    background: white;  /* thêm nền trắng để nổi bật */
+    padding: 4rem 2rem;  /* tăng padding cho dễ đọc */
+}
 
 
     </style>
@@ -1112,21 +1145,40 @@ html, body {
 <!-- ===== SEO KEYWORDS SECTION ===== -->
 <section class="seo-keywords">
     <div class="container">
-        <h2>Trung Tâm Đào Tạo Lái Xe Uy Tín Tại TP.HCM</h2>
+        <h2>Trung Tâm Đào Tạo Lái Xe Uy Tín Tại TP.HCM - Học Lái Xe Ô Tô Chuyên Nghiệp</h2>
 
         <p>
-            Trung tâm Đào Tạo Lái Xe Đoàn Kết chuyên tư vấn tuyển sinh và đào tạo
-            các hạng bằng lái xe ô tô và mô tô tại TP.HCM. 
-            Chúng tôi cung cấp các khóa học bằng lái xe B1, B2, C, A1, A2 với
-            giáo viên giàu kinh nghiệm, hỗ trợ thủ tục nhanh chóng, 
-            tỷ lệ đậu sát hạch cao.
+            Trung tâm Đào Tạo Lái Xe Đoàn Kết là địa chỉ uy tín hàng đầu tại TP.HCM, chuyên 
+            <strong>học lái xe ô tô</strong>, <strong>học bằng lái xe ô tô</strong>, 
+            <strong>học bằng lái xe B2</strong> (hạng B phổ biến nhất), <strong>học lái xe B2</strong>, 
+            <strong>học lái xe B1</strong> (hạng B số tự động hoặc theo quy định cũ), <strong>học bằng lái xe B1</strong>, 
+            <strong>học bằng lái xe C</strong>, <strong>học lái xe bằng C</strong>, 
+            <strong>học lái xe</strong>, <strong>học lái ô tô</strong> và 
+            <strong>thi bằng lái xe A1</strong> (xe máy). 
+            Chúng tôi là <strong>trung tâm đào tạo lái xe</strong> và 
+            <strong>trung tâm dạy lái xe</strong> có đội ngũ giáo viên giàu kinh nghiệm, 
+            hỗ trợ <strong>đào tạo lái xe</strong> chuyên nghiệp, thủ tục nhanh gọn, 
+            tỷ lệ <strong>thi bằng lái xe</strong> đậu cao theo quy định mới nhất từ 2025.
         </p>
 
         <p>
-            Từ khóa liên quan: học lái xe B1 TP.HCM, học lái xe B2 giá rẻ,
-            trung tâm đào tạo lái xe uy tín, học bằng lái xe ô tô,
-            thi bằng lái xe mô tô A1, học lái xe ô tô TP.HCM,
-            đăng ký học lái xe nhanh, đào tạo lái xe chuyên nghiệp.
+            Với các khóa học chất lượng cao, bạn có thể yên tâm khi đăng ký: 
+            <strong>bằng lái xe B2</strong> (hạng B), <strong>bằng lái xe B1</strong>, 
+            <strong>bằng lái xe</strong>, <strong>bằng lái xe ô tô</strong>, 
+            <strong>học bằng lái xe</strong>, <strong>dạy lái xe</strong>, 
+            <strong>dạy lái xe ô tô</strong>, <strong>thi bằng lái xe ô tô</strong>, 
+            <strong>thi bằng lái xe B2</strong>. 
+            Dù bạn muốn <strong>học lái xe</strong> hạng B (ô tô dưới 9 chỗ/tải dưới 3.500 kg), hạng C (xe tải lớn), hay <strong>thi bằng lái xe A1</strong> (xe máy), trung tâm chúng tôi đều đáp ứng tốt nhất nhu cầu <strong>lái xe</strong> an toàn và chuyên nghiệp tại TP.HCM.
+        </p>
+
+        <p>
+            Từ khóa tìm kiếm phổ biến: 
+            học lái xe ô tô, học bằng lái xe ô tô, học bằng lái xe B2, trung tâm đào tạo lái xe, 
+            học lái xe B2, học lái xe, học lái xe B1, bằng lái xe B2, bằng lái xe, bằng lái xe B1, 
+            học bằng lái xe, học bằng lái xe B1, dạy lái xe, bằng lái xe ô tô, học lái xe bằng C, 
+            thi bằng lái xe ô tô, đào tạo lái xe, thi bằng lái xe B2, học bằng lái xe C, 
+            trung tâm dạy lái xe, lái xe, học lái ô tô, thi bằng lái xe, dạy lái xe ô tô, 
+            thi bằng lái xe A1.
         </p>
     </div>
 </section>
